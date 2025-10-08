@@ -87,9 +87,9 @@ router.post('/audit/save-lead', (req, res) => {
     
     stmt.run([
         email,
-        first_name,
-        last_name,
-        company,
+        first_name || '',
+        last_name || '',
+        company || '',
         parseInt(overallScore),
         parseInt(totalAchieved),
         parseInt(totalPossible),
@@ -103,14 +103,18 @@ router.post('/audit/save-lead', (req, res) => {
         
         console.log('New lead saved:', { email, first_name, last_name, company, auditId: this.lastID });
         
-        // Show detailed results page
+        // Show detailed results page with full report
         res.render('audit-results', {
             overallScore: parseInt(overallScore),
             sectionScores: parsedSectionScores,
             totalAchieved: parseInt(totalAchieved),
             totalPossible: parseInt(totalPossible),
             email: email,
-            showDetailed: true
+            firstName: first_name || '',
+            lastName: last_name || '',
+            company: company || '',
+            showDetailed: true,
+            showFullReport: true
         });
     });
     
@@ -142,6 +146,7 @@ router.get('/admin/leads', (req, res) => {
         res.render('admin-leads', { leads: rows });
     });
 });
+
 // View individual lead details
 router.get('/admin/leads/:id', (req, res) => {
     const leadId = req.params.id;
@@ -165,6 +170,41 @@ router.get('/admin/leads/:id', (req, res) => {
             sectionScores: sectionScores,
             answers: answers
         });
+    });
+});
+
+// Export leads to CSV
+router.get('/admin/leads/export', (req, res) => {
+    db.all('SELECT * FROM audits ORDER BY created_at DESC', (err, rows) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Database error');
+        }
+        
+        if (rows.length === 0) {
+            return res.send(`
+                <html>
+                    <body>
+                        <h1>No Leads to Export</h1>
+                        <p>There are no leads in the database yet.</p>
+                        <a href="/admin/leads">Back to Leads</a>
+                    </body>
+                </html>
+            `);
+        }
+        
+        // Create CSV header
+        let csv = 'ID,Email,First Name,Last Name,Company,Overall Score,Total Achieved,Total Possible,Created Date\n';
+        
+        // Add data rows
+        rows.forEach(lead => {
+            csv += `"${lead.id}","${lead.email || ''}","${lead.first_name || ''}","${lead.last_name || ''}","${lead.company || ''}",${lead.overall_score || 0},${lead.total_achieved || 0},${lead.total_possible || 0},"${new Date(lead.created_at).toLocaleDateString()}"\n`;
+        });
+        
+        // Set headers for file download
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', `attachment; filename=hubspot-audit-leads-${new Date().toISOString().split('T')[0]}.csv`);
+        res.send(csv);
     });
 });
 
@@ -248,6 +288,5 @@ router.get('/audit/submit', (req, res) => {
         </html>
     `);
 });
-
 
 module.exports = router;
