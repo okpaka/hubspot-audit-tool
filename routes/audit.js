@@ -72,8 +72,11 @@ router.post('/audit/submit', (req, res) => {
 });
 
 // Save lead and show detailed results
+// Save lead and show detailed results
 router.post('/audit/save-lead', (req, res) => {
     const { email, first_name, last_name, company, overallScore, sectionScores, totalAchieved, totalPossible, answers } = req.body;
+    
+    console.log('Received lead data:', { email, first_name, last_name, company });
     
     // Parse the data
     const parsedSectionScores = typeof sectionScores === 'string' ? JSON.parse(sectionScores) : sectionScores;
@@ -110,8 +113,8 @@ router.post('/audit/save-lead', (req, res) => {
             totalAchieved: parseInt(totalAchieved),
             totalPossible: parseInt(totalPossible),
             email: email,
-            firstName: first_name || '',
-            lastName: last_name || '',
+            first_name: first_name || '',
+            last_name: last_name || '',
             company: company || '',
             showDetailed: true,
             showFullReport: true
