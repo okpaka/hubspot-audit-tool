@@ -120,23 +120,6 @@
             border-radius: 15px;
         }
         
-        .floating-action {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 1000;
-        }
-        
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
         .section-icon {
             width: 50px;
             height: 50px;
@@ -146,6 +129,22 @@
             justify-content: center;
             font-size: 1.5rem;
             margin-right: 15px;
+        }
+
+        .section-stats {
+            font-size: 0.85rem;
+        }
+
+        .priority-high {
+            border-left: 4px solid var(--danger-red) !important;
+        }
+
+        .priority-medium {
+            border-left: 4px solid var(--warning-orange) !important;
+        }
+
+        .priority-low {
+            border-left: 4px solid var(--success-green) !important;
         }
     </style>
 </head>
@@ -159,7 +158,7 @@
                         <i class="fas fa-chart-line me-3"></i>HubSpot Portal Audit
                     </h1>
                     <p class="lead mb-4 opacity-90">
-                        Comprehensive evaluation of <strong><%= totalPossible %></strong> key aspects across your HubSpot ecosystem
+                        Comprehensive evaluation of <strong>82 questions</strong> across <strong>15 functional areas</strong>
                     </p>
                     <div class="d-flex flex-wrap gap-2">
                         <span class="badge bg-light text-dark fs-6 py-2 px-3">
@@ -167,6 +166,9 @@
                         </span>
                         <span class="badge bg-light text-dark fs-6 py-2 px-3">
                             <i class="fas fa-check-circle me-1"></i><%= totalAchieved %>/<%= totalPossible %> Points
+                        </span>
+                        <span class="badge bg-light text-dark fs-6 py-2 px-3">
+                            <i class="fas fa-list-alt me-1"></i>15 Sections Evaluated
                         </span>
                     </div>
                 </div>
@@ -258,6 +260,10 @@
                                 <div class="fs-2 fw-bold text-info"><%= totalPossible %></div>
                                 <small class="text-muted">Total Possible</small>
                             </div>
+                            <div class="text-center">
+                                <div class="fs-2 fw-bold text-warning">15</div>
+                                <small class="text-muted">Sections</small>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-4">
@@ -279,40 +285,168 @@
             </div>
         </div>
 
+        <!-- Section Structure Overview -->
+        <div class="card border-0 shadow-sm mb-5">
+            <div class="card-body">
+                <h4 class="card-title text-primary mb-4">
+                    <i class="fas fa-sitemap me-2"></i>Audit Structure Overview
+                </h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="fw-bold text-muted mb-3">Section Breakdown</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Settings & Configuration</strong></td>
+                                        <td class="text-end">10 questions</td>
+                                        <td class="text-end text-muted">20 points</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>CRM Core - Contacts</strong></td>
+                                        <td class="text-end">5 questions</td>
+                                        <td class="text-end text-muted">10 points</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>CRM Core - Companies</strong></td>
+                                        <td class="text-end">5 questions</td>
+                                        <td class="text-end text-muted">10 points</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>CRM Core - Leads</strong></td>
+                                        <td class="text-end">5 questions</td>
+                                        <td class="text-end text-muted">10 points</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>CRM Core - Deals</strong></td>
+                                        <td class="text-end">5 questions</td>
+                                        <td class="text-end text-muted">10 points</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>CRM Core - Tickets</strong></td>
+                                        <td class="text-end">5 questions</td>
+                                        <td class="text-end text-muted">10 points</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Content Hub</strong></td>
+                                        <td class="text-end">5 questions</td>
+                                        <td class="text-end text-muted">10 points</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="fw-bold text-muted mb-3">&nbsp;</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Sales Hub</strong></td>
+                                        <td class="text-end">6 questions</td>
+                                        <td class="text-end text-muted">12 points</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Commerce</strong></td>
+                                        <td class="text-end">5 questions</td>
+                                        <td class="text-end text-muted">10 points</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Service Hub</strong></td>
+                                        <td class="text-end">6 questions</td>
+                                        <td class="text-end text-muted">12 points</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Data Management & Ops</strong></td>
+                                        <td class="text-end">5 questions</td>
+                                        <td class="text-end text-muted">10 points</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Automation</strong></td>
+                                        <td class="text-end">5 questions</td>
+                                        <td class="text-end text-muted">10 points</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Reporting & Analytics</strong></td>
+                                        <td class="text-end">6 questions</td>
+                                        <td class="text-end text-muted">12 points</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Breeze (AI/UX)</strong></td>
+                                        <td class="text-end">4 questions</td>
+                                        <td class="text-end text-muted">8 points</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Development & Extensibility</strong></td>
+                                        <td class="text-end">5 questions</td>
+                                        <td class="text-end text-muted">10 points</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-info mt-3">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Scoring System:</strong> Each question is scored 0 (No), 1 (Partial), or 2 (Full) for a maximum of 2 points per question. Total possible score: <strong>164 points</strong> across 82 questions.
+                </div>
+            </div>
+        </div>
+
         <!-- Section Breakdown -->
         <h3 class="mb-4 text-primary">
             <i class="fas fa-th-large me-2"></i>Section Performance Breakdown
         </h3>
         <div class="row g-4 mb-5">
-            <% Object.keys(sectionScores).forEach(section => { 
+            <% 
+            const sectionStructure = {
+                'Settings & Configuration': { questions: 10, max: 20, icon: 'fas fa-cog' },
+                'CRM Core - Contacts': { questions: 5, max: 10, icon: 'fas fa-users' },
+                'CRM Core - Companies': { questions: 5, max: 10, icon: 'fas fa-building' },
+                'CRM Core - Leads': { questions: 5, max: 10, icon: 'fas fa-bullseye' },
+                'CRM Core - Deals': { questions: 5, max: 10, icon: 'fas fa-handshake' },
+                'CRM Core - Tickets': { questions: 5, max: 10, icon: 'fas fa-ticket-alt' },
+                'Content Hub': { questions: 5, max: 10, icon: 'fas fa-file-alt' },
+                'Sales Hub': { questions: 6, max: 12, icon: 'fas fa-chart-line' },
+                'Commerce': { questions: 5, max: 10, icon: 'fas fa-shopping-cart' },
+                'Service Hub': { questions: 6, max: 12, icon: 'fas fa-headset' },
+                'Data Management & Ops': { questions: 5, max: 10, icon: 'fas fa-database' },
+                'Automation': { questions: 5, max: 10, icon: 'fas fa-robot' },
+                'Reporting & Analytics': { questions: 6, max: 12, icon: 'fas fa-chart-bar' },
+                'Breeze (AI/UX)': { questions: 4, max: 8, icon: 'fas fa-magic' },
+                'Development & Extensibility': { questions: 5, max: 10, icon: 'fas fa-code' }
+            };
+
+            Object.keys(sectionScores).forEach(section => { 
                 const sectionData = sectionScores[section];
                 const percentage = sectionData.percentage;
+                const sectionInfo = sectionStructure[section] || { questions: 0, max: 0, icon: 'fas fa-question' };
                 
                 let progressClass = 'bg-danger';
                 let badgeClass = 'bg-danger';
                 let badgeText = 'High Priority';
-                let iconClass = 'fas fa-exclamation-triangle text-danger';
+                let priorityClass = 'priority-high';
                 
                 if (percentage < 40) {
                     progressClass = 'bg-danger';
                     badgeClass = 'bg-danger';
                     badgeText = 'High Priority';
-                    iconClass = 'fas fa-exclamation-triangle text-danger';
+                    priorityClass = 'priority-high';
                 } else if (percentage < 70) {
                     progressClass = 'bg-warning';
                     badgeClass = 'bg-warning text-dark';
                     badgeText = 'Growth Area';
-                    iconClass = 'fas fa-chart-line text-warning';
+                    priorityClass = 'priority-medium';
                 } else if (percentage < 85) {
                     progressClass = 'bg-success';
                     badgeClass = 'bg-success';
                     badgeText = 'Strong Area';
-                    iconClass = 'fas fa-check-circle text-success';
+                    priorityClass = 'priority-low';
                 } else {
                     progressClass = 'bg-primary';
                     badgeClass = 'bg-primary';
                     badgeText = 'Excellent';
-                    iconClass = 'fas fa-trophy text-primary';
+                    priorityClass = 'priority-low';
                 }
             %>
             <div class="col-xl-4 col-lg-6">
@@ -320,12 +454,13 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-3">
                             <div class="section-icon bg-light text-primary">
-                                <i class="<%= iconClass %>"></i>
+                                <i class="<%= sectionInfo.icon %>"></i>
                             </div>
                             <div class="flex-grow-1">
                                 <h6 class="card-title mb-1 fw-bold text-dark"><%= section %></h6>
-                                <div class="text-muted small">
-                                    <%= sectionData.score %>/<%= sectionData.max %> points
+                                <div class="text-muted section-stats">
+                                    <%= sectionData.score %>/<%= sectionData.max %> points • 
+                                    <%= sectionInfo.questions %> questions
                                 </div>
                             </div>
                             <span class="badge <%= badgeClass %> badge-priority">
@@ -365,7 +500,113 @@
             <% }) %>
         </div>
 
-       
+        <!-- Priority Recommendations -->
+        <div class="card border-0 shadow-sm mb-5">
+            <div class="card-body">
+                <h4 class="card-title text-primary mb-4">
+                    <i class="fas fa-rocket me-2"></i>Priority Recommendations
+                </h4>
+                
+                <!-- High Priority Sections -->
+                <% 
+                const highPrioritySections = Object.keys(sectionScores).filter(section => 
+                    sectionScores[section].percentage < 40
+                );
+                %>
+                <% if (highPrioritySections.length > 0) { %>
+                <div class="mb-4">
+                    <h6 class="text-danger fw-bold mb-3">
+                        <i class="fas fa-exclamation-triangle me-2"></i>High Priority - Immediate Attention Needed
+                    </h6>
+                    <div class="row g-3">
+                        <% highPrioritySections.forEach(section => { %>
+                        <div class="col-lg-6">
+                            <div class="recommendation-item priority-high p-3">
+                                <h6 class="fw-bold text-danger mb-2"><%= section %></h6>
+                                <p class="mb-2 small">
+                                    <% if (section.includes('CRM')) { %>
+                                        Focus on data management and process optimization
+                                    <% } else if (section.includes('Content')) { %>
+                                        Develop content strategy and SEO implementation
+                                    <% } else if (section.includes('Sales')) { %>
+                                        Implement sales processes and automation
+                                    <% } else if (section.includes('Service')) { %>
+                                        Set up customer service workflows and tools
+                                    <% } else { %>
+                                        Review configuration and setup requirements
+                                    <% } %>
+                                </p>
+                                <small class="text-muted">Current Score: <%= sectionScores[section].percentage %>%</small>
+                            </div>
+                        </div>
+                        <% }) %>
+                    </div>
+                </div>
+                <% } %>
+
+                <!-- Growth Areas -->
+                <% 
+                const growthSections = Object.keys(sectionScores).filter(section => 
+                    sectionScores[section].percentage >= 40 && sectionScores[section].percentage < 70
+                );
+                %>
+                <% if (growthSections.length > 0) { %>
+                <div class="mb-4">
+                    <h6 class="text-warning fw-bold mb-3">
+                        <i class="fas fa-chart-line me-2"></i>Growth Areas - Optimization Opportunities
+                    </h6>
+                    <div class="row g-3">
+                        <% growthSections.forEach(section => { %>
+                        <div class="col-lg-6">
+                            <div class="recommendation-item priority-medium p-3">
+                                <h6 class="fw-bold text-warning mb-2"><%= section %></h6>
+                                <p class="mb-2 small">
+                                    <% if (section.includes('Automation')) { %>
+                                        Expand workflow automation and optimization
+                                    <% } else if (section.includes('Reporting')) { %>
+                                        Enhance analytics and reporting capabilities
+                                    <% } else if (section.includes('Development')) { %>
+                                        Explore custom integrations and extensions
+                                    <% } else { %>
+                                        Optimize existing processes and features
+                                    <% } %>
+                                </p>
+                                <small class="text-muted">Current Score: <%= sectionScores[section].percentage %>%</small>
+                            </div>
+                        </div>
+                        <% }) %>
+                    </div>
+                </div>
+                <% } %>
+
+                <!-- Strong Areas -->
+                <% 
+                const strongSections = Object.keys(sectionScores).filter(section => 
+                    sectionScores[section].percentage >= 70
+                );
+                %>
+                <% if (strongSections.length > 0) { %>
+                <div>
+                    <h6 class="text-success fw-bold mb-3">
+                        <i class="fas fa-check-circle me-2"></i>Strong Areas - Maintain Excellence
+                    </h6>
+                    <div class="row g-3">
+                        <% strongSections.forEach(section => { %>
+                        <div class="col-lg-6">
+                            <div class="recommendation-item priority-low p-3">
+                                <h6 class="fw-bold text-success mb-2"><%= section %></h6>
+                                <p class="mb-2 small">
+                                    Maintain current practices and explore advanced features
+                                </p>
+                                <small class="text-muted">Current Score: <%= sectionScores[section].percentage %>%</small>
+                            </div>
+                        </div>
+                        <% }) %>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+        </div>
 
         <!-- Call to Action -->
         <div class="card border-0 shadow-sm bg-primary text-white">
