@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lead Details - <%= lead.email %></title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; max-width: 1200px; }
+        .header { background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+        .score-card { background: white; padding: 20px; border-radius: 10px; border: 1px solid #ddd; margin: 10px 0; }
+        .overall-score { font-size: 3em; font-weight: bold; color: #ff7a59; margin: 10px 0; }
+        .section-score { margin: 15px 0; padding: 15px; background: #f8f9fa; border-radius: 5px; border-left: 4px solid #ff7a59; }
+        .progress-bar { background: #e9ecef; border-radius: 10px; height: 20px; margin: 10px 0; }
+        .progress-fill { background: #ff7a59; height: 100%; border-radius: 10px; }
+        .btn { background: #ff7a59; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; margin: 5px; }
+        .btn-secondary { background: #6c757d; }
+        .answers-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .answers-table th, .answers-table td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        .answers-table th { background-color: #f8f9fa; }
+        .answer-0 { background-color: #f8d7da; } /* No - Red */
+        .answer-1 { background-color: #fff3cd; } /* Partial - Yellow */
+        .answer-2 { background-color: #d1edff; } /* Yes - Blue */
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Lead Details</h1>
+        <a href="/admin/leads" class="btn btn-secondary">← Back to All Leads</a>
+    </div>
+
+    <div class="score-card">
+        <h2>Contact Information</h2>
+        <p><strong>Email:</strong> <%= lead.email %></p>
+        <p><strong>Name:</strong> <%= lead.first_name %> <%= lead.last_name %></p>
+        <p><strong>Company:</strong> <%= lead.company %></p>
+        <p><strong>Submitted:</strong> <%= new Date(lead.created_at).toLocaleString() %></p>
+    </div>
+
+    <div class="score-card">
+        <h2>Overall Score</h2>
+        <div class="overall-score"><%= lead.overall_score %>%</div>
+        <p><strong><%= lead.total_achieved %> out of <%= lead.total_possible %></strong> points achieved</p>
+    </div>
+
+    <div class="score-card">
+        <h2>Section Breakdown</h2>
+        <% Object.keys(sectionScores).forEach(section => { 
+            const sectionData = sectionScores[section];
+            const percentage = sectionData.percentage;
+        %>
+            <div class="section-score">
+                <h3><%= section %></h3>
+                <p><strong><%= sectionData.score %>/<%= sectionData.max %></strong> points (<%= percentage %>%)</p>
+                <div class="progress-bar">
+                    <!-- <div class="progress-fill" style="width: <%= percentage %>%"></div> -->
+                </div>
+            </div>
+        <% }) %>
+    </div>
+
+    <div class="score-card">
+        <h2>Detailed Answers</h2>
+        <table class="answers-table">
+            <thead>
+                <tr>
+                    <th>Question</th>
+                    <th>Section</th>
+                    <th>Answer</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% Object.keys(answers).forEach(answerKey => { 
+                    const answerValue = answers[answerKey];
+                    let answerText = 'Not answered';
+                    let scoreClass = '';
+                    
+                    if (answerValue === '0') {
+                        answerText = 'No (0)';
+                        scoreClass = 'answer-0';
+                    } else if (answerValue === '1') {
+                        answerText = 'Partial (1)';
+                        scoreClass = 'answer-1';
+                    } else if (answerValue === '2') {
+                        answerText = 'Yes (2)';
+                        scoreClass = 'answer-2';
+                    }
+                    
+                    // Extract section from answer key
+                    const sectionMatch = answerKey.match(/q\d+_(.+)/);
+                    const section = sectionMatch ? sectionMatch[1].replace(/_/g, ' ') : 'Unknown';
+                    
+                    // Extract question number for display
+                    const questionNum = answerKey.match(/q(\d+)_/);
+                    const questionDisplay = questionNum ? `Question ${parseInt(questionNum[1]) + 1}` : 'Unknown';
+                %>
+                    <tr class="<%= scoreClass %>">
+                        <td><%= questionDisplay %></td>
+                        <td><%= section %></td>
+                        <td><%= answerText %></td>
+                        <td><strong><%= answerValue %></strong>/2</td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="margin-top: 30px;">
+        <a href="/admin/leads" class="btn btn-secondary">← Back to All Leads</a>
+        <a href="mailto:<%= lead.email %>" class="btn" style="background: #007bff;">✉️ Email Lead</a>
+    </div>
+</body>
+</html>

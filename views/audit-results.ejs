@@ -12,16 +12,42 @@
         .progress-bar { background: #e9ecef; border-radius: 10px; height: 20px; margin: 10px 0; }
         .progress-fill { background: #ff7a59; height: 100%; border-radius: 10px; }
         .btn { background: #ff7a59; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; display: inline-block; margin: 10px 5px; }
+        .email-confirmation { background: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin: 20px 0; }
+        .recommendations { background: #fff3cd; color: #856404; padding: 15px; border-radius: 5px; margin: 20px 0; }
     </style>
 </head>
 <body>
     <h1>HubSpot Usage Audit Results</h1>
+    
+    <% if (email) { %>
+        <div class="email-confirmation">
+            <h3>✅ Thank you, <%= email %>!</h3>
+            <p>Your detailed PDF report with personalized recommendations is being generated and will be sent to your email shortly.</p>
+        </div>
+    <% } %>
     
     <div class="score-card">
         <h2>Your Overall HubSpot Health Score</h2>
         <div class="overall-score"><%= overallScore %>%</div>
         <p>You scored <strong><%= totalAchieved %> out of <%= totalPossible %></strong> possible points</p>
     </div>
+
+    <% if (overallScore < 50) { %>
+        <div class="recommendations">
+            <h3>🚀 Opportunity for Growth</h3>
+            <p>Your score indicates significant opportunities to optimize your HubSpot usage. Our detailed report will show you exactly where to focus for maximum impact.</p>
+        </div>
+    <% } else if (overallScore < 80) { %>
+        <div class="recommendations">
+            <h3>💡 Solid Foundation</h3>
+            <p>You're using HubSpot well, but there are key areas where optimization could drive even better results. Your report will highlight these opportunities.</p>
+        </div>
+    <% } else { %>
+        <div class="recommendations">
+            <h3>🎉 Excellent Usage!</h3>
+            <p>You're among the top HubSpot users! Your report will include advanced optimization strategies to maintain your competitive edge.</p>
+        </div>
+    <% } %>
 
     <h2>Section Breakdown</h2>
     <% Object.keys(sectionScores).forEach(section => { 
@@ -32,7 +58,7 @@
             <h3><%= section %></h3>
             <p><strong><%= sectionData.score %>/<%= sectionData.max %></strong> points (<%= percentage %>%)</p>
             <div class="progress-bar">
-                <!-- <div class="progress-fill" style="width: <%= percentage %>%"></div> -->
+                <!-- <div class="progress-fill" style="width: < %= percentage %>%"></div> -->
             </div>
         </div>
     <% }) %>

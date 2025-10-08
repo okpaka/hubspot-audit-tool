@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - HubSpot Audit Leads</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #f8f9fa; }
+        .badge { 
+            background: #ff7a59; 
+            color: white; 
+            padding: 4px 12px; 
+            border-radius: 12px; 
+            font-size: 0.9em;
+            display: inline-block;
+        }
+        .score-low { background: #dc3545; }
+        .score-medium { background: #ffc107; color: black; }
+        .score-high { background: #28a745; }
+        .score-excellent { background: #007bff; }
+        
+    </style>
+</head>
+<body>
+    <h1>HubSpot Audit Leads</h1>
+    <p>Total leads: <strong><%= leads.length %></strong></p>
+    
+    
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Company</th>
+                <th>Score</th>
+                <th>Points</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% leads.forEach(lead => { 
+                let scoreClass = 'score-low';
+                if (lead.overall_score >= 80) scoreClass = 'score-excellent';
+                else if (lead.overall_score >= 60) scoreClass = 'score-high';
+                else if (lead.overall_score >= 40) scoreClass = 'score-medium';
+            %>
+                <tr>
+                    <td><%= lead.id %></td>
+                    <td><strong><%= lead.email %></strong></td>
+                    <td><%= lead.first_name %> <%= lead.last_name %></td>
+                    <td><%= lead.company %></td>
+                    <td>
+                        <span class="badge <%= scoreClass %>">
+                            <%= lead.overall_score %>%
+                        </span>
+                    </td>
+                    <td><%= lead.total_achieved %>/<%= lead.total_possible %></td>
+                    <td><%= new Date(lead.created_at).toLocaleDateString() %></td>
+                    <td>
+                        <a href="/admin/leads/<%= lead.id %>">View Details</a>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+    
+    <% if (leads.length === 0) { %>
+        <div style="text-align: center; padding: 40px; color: #666;">
+            <h3>No leads yet</h3>
+            <p>Leads will appear here once users complete the audit and submit their email.</p>
+            <a href="/audit">Test the Audit</a>
+        </div>
+    <% } %>
+    
+    <br>
+    <a href="/">Back to Audit</a>
+</body>
+</html>

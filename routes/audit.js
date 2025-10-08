@@ -60,12 +60,110 @@ router.post('/audit/submit', (req, res) => {
         // Calculate scores
         const scores = calculateScores(answers, questions);
         
-        // Render results page
-        res.render('audit-results', {
+        // Show email capture page instead of immediate results
+        res.render('email-capture', {
             overallScore: scores.overallScore,
             sectionScores: scores.sectionScores,
+            totalAchieved: scores.totalAchieved,
             totalPossible: scores.totalPossible,
-            totalAchieved: scores.totalAchieved
+            answers: answers
+        });
+    });
+});
+
+// Save lead and show detailed results
+router.post('/audit/save-lead', (req, res) => {
+    const { email, first_name, last_name, company, overallScore, sectionScores, totalAchieved, totalPossible, answers } = req.body;
+    
+    // Parse the data
+    const parsedSectionScores = typeof sectionScores === 'string' ? JSON.parse(sectionScores) : sectionScores;
+    const parsedAnswers = typeof answers === 'string' ? JSON.parse(answers) : answers;
+    
+    // Save to database
+    const stmt = db.prepare(`
+        INSERT INTO audits (email, first_name, last_name, company, overall_score, total_achieved, total_possible, section_scores, answers)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+    
+    stmt.run([
+        email,
+        first_name,
+        last_name,
+        company,
+        parseInt(overallScore),
+        parseInt(totalAchieved),
+        parseInt(totalPossible),
+        JSON.stringify(parsedSectionScores),
+        JSON.stringify(parsedAnswers)
+    ], function(err) {
+        if (err) {
+            console.error('Error saving lead:', err);
+            return res.status(500).send('Error saving your information');
+        }
+        
+        console.log('New lead saved:', { email, first_name, last_name, company, auditId: this.lastID });
+        
+        // Show detailed results page
+        res.render('audit-results', {
+            overallScore: parseInt(overallScore),
+            sectionScores: parsedSectionScores,
+            totalAchieved: parseInt(totalAchieved),
+            totalPossible: parseInt(totalPossible),
+            email: email,
+            showDetailed: true
+        });
+    });
+    
+    stmt.finalize();
+});
+
+// Direct results page (for testing without email capture)
+router.get('/audit/results', (req, res) => {
+    // This is just for testing - in production, use the email capture flow
+    res.send(`
+        <html>
+            <body>
+                <h1>Test Results Page</h1>
+                <p>This is for testing only. Use the form to submit your audit.</p>
+                <a href="/audit">Go to Audit Form</a>
+            </body>
+        </html>
+    `);
+});
+
+// Admin route to view leads (optional - for your internal use)
+router.get('/admin/leads', (req, res) => {
+    db.all('SELECT * FROM audits ORDER BY created_at DESC', (err, rows) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Database error');
+        }
+        
+        res.render('admin-leads', { leads: rows });
+    });
+});
+// View individual lead details
+router.get('/admin/leads/:id', (req, res) => {
+    const leadId = req.params.id;
+    
+    db.get('SELECT * FROM audits WHERE id = ?', [leadId], (err, lead) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Database error');
+        }
+        
+        if (!lead) {
+            return res.status(404).send('Lead not found');
+        }
+        
+        // Parse JSON data
+        const sectionScores = lead.section_scores ? JSON.parse(lead.section_scores) : {};
+        const answers = lead.answers ? JSON.parse(lead.answers) : {};
+        
+        res.render('admin-lead-detail', { 
+            lead: lead,
+            sectionScores: sectionScores,
+            answers: answers
         });
     });
 });
@@ -137,5 +235,19 @@ router.get('/reset-questions', (req, res) => {
         </html>
     `);
 });
+
+// Handle GET requests to POST routes with helpful error message
+router.get('/audit/submit', (req, res) => {
+    res.status(405).send(`
+        <html>
+            <body>
+                <h1>Method Not Allowed</h1>
+                <p>Please use the audit form to submit your responses.</p>
+                <a href="/audit">Go to Audit Form</a>
+            </body>
+        </html>
+    `);
+});
+
 
 module.exports = router;

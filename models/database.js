@@ -14,13 +14,21 @@ db.serialize(() => {
         max_score INTEGER DEFAULT 2
     )`);
 
-    // Audits table
+    // Enhanced Audits table for lead capture
     db.run(`CREATE TABLE IF NOT EXISTS audits (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        email TEXT,
+        email TEXT NOT NULL,
+        first_name TEXT,
+        last_name TEXT,
+        company TEXT,
         overall_score INTEGER,
+        total_achieved INTEGER,
+        total_possible INTEGER,
         section_scores TEXT,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        answers TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        contact_id TEXT,
+        lead_source TEXT DEFAULT 'hubspot-audit-tool'
     )`);
 });
 
