@@ -1,74 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <titleGet Your Detailed HubSpot Audit Report</title>
-    <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
-        .container { background: #f8f9fa; padding: 30px; border-radius: 10px; margin: 20px 0; }
-        .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input[type="text"], input[type="email"] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; }
-        .btn { background: #ff7a59; color: white; padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; width: 100%; }
-        .benefits { background: white; padding: 20px; border-radius: 5px; margin: 20px 0; }
-        .benefits ul { margin: 10px 0; padding-left: 20px; }
-        .benefits li { margin-bottom: 8px; }
-    </style>
-</head>
-<body>
-    <div style="text-align: center; margin-bottom: 30px;">
-        <h1>Get Your Detailed HubSpot Audit Report</h1>
-        <p>Your overall score: <strong style="color: #ff7a59; font-size: 1.2em;"><%= overallScore %>%</strong></p>
-    </div>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Get Your Detailed HubSpot Audit Report</title>
 
-    <div class="container">
-        <h2>Unlock Your Personalized Action Plan</h2>
-        
-        <div class="benefits">
-            <p><strong>By providing your email, you'll receive:</strong></p>
-            <ul>
-                <li>📊 <strong>Detailed PDF Report</strong> with section-by-section analysis</li>
-                <li>🎯 <strong>Personalized Recommendations</strong> based on your score</li>
-                <li>🚀 <strong>Actionable Steps</strong> to improve your HubSpot usage</li>
-                <li>📈 <strong>Benchmark Data</strong> comparing you to industry standards</li>
-                <li>🔧 <strong>Priority Support</strong> for HubSpot optimization</li>
-            </ul>
+  <!-- ✅ Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+    }
+
+    .audit-card {
+      background: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      max-width: 550px;
+      width: 100%;
+      padding: 40px 35px;
+    }
+
+    .audit-card h1 {
+      color: #ff7a59;
+      font-size: 1.8rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .audit-card p.subtitle {
+      text-align: center;
+      font-size: 1rem;
+      color: #6c757d;
+      margin-bottom: 30px;
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: #333;
+    }
+
+    .btn-orange {
+      background-color: #ff7a59;
+      color: white;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      border-radius: 8px;
+    }
+
+    .btn-orange:hover {
+      background-color: #ff896a;
+      transform: translateY(-1px);
+    }
+
+    .benefits {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 25px;
+    }
+
+    .benefits h5 {
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .benefits li {
+      margin-bottom: 8px;
+      color: #555;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #888;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="audit-card">
+    <h1>Get Your Detailed HubSpot Audit Report</h1>
+    <p class="subtitle">Receive actionable insights to optimize your HubSpot setup 🚀</p>
+
+    <form action="/audit/save-lead" method="POST">
+      <!-- Hidden audit data -->
+      <input type="hidden" name="overallScore" value="<%= overallScore %>">
+      <input type="hidden" name="sectionScores" value="<%= JSON.stringify(sectionScores) %>">
+      <input type="hidden" name="totalAchieved" value="<%= totalAchieved %>">
+      <input type="hidden" name="totalPossible" value="<%= totalPossible %>">
+      <input type="hidden" name="answers" value="<%= JSON.stringify(answers) %>">
+
+      <div class="mb-3">
+        <label for="email" class="form-label">Email Address *</label>
+        <input type="email" id="email" name="email" class="form-control form-control-lg" required>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="first_name" class="form-label">First Name</label>
+          <input type="text" id="first_name" name="first_name" class="form-control">
         </div>
 
-        <form action="/audit/save-lead" method="POST">
-            <input type="hidden" name="overallScore" value="<%= overallScore %>">
-            <input type="hidden" name="sectionScores" value="<%= JSON.stringify(sectionScores) %>">
-            <input type="hidden" name="totalAchieved" value="<%= totalAchieved %>">
-            <input type="hidden" name="totalPossible" value="<%= totalPossible %>">
-            <input type="hidden" name="answers" value="<%= JSON.stringify(answers) %>">
-            
-            <div class="form-group">
-                <label for="email">Email Address *</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="first_name">First Name</label>
-                <input type="text" id="first_name" name="first_name">
-            </div>
-            
-            <div class="form-group">
-                <label for="last_name">Last Name</label>
-                <input type="text" id="last_name" name="last_name">
-            </div>
-            
-            <div class="form-group">
-                <label for="company">Company</label>
-                <input type="text" id="company" name="company">
-            </div>
-            
-            <button type="submit" class="btn">Get My Detailed Report</button>
-            
-            <p style="text-align: center; margin-top: 15px; font-size: 0.9em; color: #666;">
-                We respect your privacy. Unsubscribe at any time.
-            </p>
-        </form>
+        <div class="col-md-6 mb-3">
+          <label for="last_name" class="form-label">Last Name</label>
+          <input type="text" id="last_name" name="last_name" class="form-control">
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="company" class="form-label">Company</label>
+        <input type="text" id="company" name="company" class="form-control">
+      </div>
+
+      <button type="submit" class="btn btn-orange w-100 py-3">
+        View My Detailed Report
+      </button>
+    </form>
+
+    <div class="benefits mt-4">
+      <h5>What You'll Get:</h5>
+      <ul>
+        <li>✅ A detailed HubSpot usage breakdown by category</li>
+        <li>💡 Tailored recommendations for quick improvements</li>
+        <li>📈 Insightful metrics to guide your next optimization steps</li>
+      </ul>
     </div>
+
+    <footer>
+      We respect your privacy. You can unsubscribe at any time.
+    </footer>
+  </div>
+
+  <!-- ✅ Bootstrap JS (optional, for animations) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
