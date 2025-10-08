@@ -17,7 +17,7 @@ app.set('trust proxy', 1);
 app.use(session({
     secret: process.env.SESSION_SECRET || 'hubspot-audit-vercel-secret',
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: { 
         secure: process.env.NODE_ENV === 'production',
         maxAge: 24 * 60 * 60 * 1000
