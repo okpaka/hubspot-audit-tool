@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HubSpot Audit Results</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .score-card { background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0; text-align: center; }
+        .overall-score { font-size: 3em; font-weight: bold; color: #ff7a59; margin: 10px 0; }
+        .section-score { margin: 15px 0; padding: 15px; background: white; border-radius: 5px; border-left: 4px solid #ff7a59; }
+        .progress-bar { background: #e9ecef; border-radius: 10px; height: 20px; margin: 10px 0; }
+        .progress-fill { background: #ff7a59; height: 100%; border-radius: 10px; }
+        .btn { background: #ff7a59; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; display: inline-block; margin: 10px 5px; }
+    </style>
+</head>
+<body>
+    <h1>HubSpot Usage Audit Results</h1>
+    
+    <div class="score-card">
+        <h2>Your Overall HubSpot Health Score</h2>
+        <div class="overall-score"><%= overallScore %>%</div>
+        <p>You scored <strong><%= totalAchieved %> out of <%= totalPossible %></strong> possible points</p>
+    </div>
+
+    <h2>Section Breakdown</h2>
+    <% Object.keys(sectionScores).forEach(section => { 
+        const sectionData = sectionScores[section];
+        const percentage = sectionData.percentage;
+    %>
+        <div class="section-score">
+            <h3><%= section %></h3>
+            <p><strong><%= sectionData.score %>/<%= sectionData.max %></strong> points (<%= percentage %>%)</p>
+            <div class="progress-bar">
+                <!-- <div class="progress-fill" style="width: <%= percentage %>%"></div> -->
+            </div>
+        </div>
+    <% }) %>
+
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="/audit" class="btn">Retake Audit</a>
+        <a href="/" class="btn" style="background: #6c757d;">Home</a>
+    </div>
+</body>
+</html>
