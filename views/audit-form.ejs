@@ -4,8 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HubSpot Usage Audit</title>
+
+  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
   <style>
     :root {
       --hubspot-orange: #ff7a59;
@@ -57,6 +60,9 @@
       width: 100%;
       text-align: center;
       animation: fadeIn 0.4s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 25px; /* vertical spacing between elements */
     }
 
     @keyframes fadeIn {
@@ -70,7 +76,6 @@
       padding: 6px 18px;
       border-radius: 25px;
       font-weight: 600;
-      margin-bottom: 15px;
       display: inline-block;
     }
 
@@ -78,17 +83,15 @@
       font-size: 1.5rem;
       font-weight: 600;
       color: var(--hubspot-dark);
-      margin-bottom: 25px;
       line-height: 1.4;
     }
 
     /* Options */
     .options-container {
       display: flex;
-      gap: 15px;
+      gap: 20px;
       justify-content: center;
       flex-wrap: wrap;
-      margin-bottom: 25px;
     }
 
     .option-btn {
@@ -121,7 +124,6 @@
       border-radius: 5px;
       background: #e9ecef;
       overflow: hidden;
-      margin-top: 10px;
     }
 
     .progress-fill {
@@ -134,7 +136,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 30px;
+      flex-wrap: wrap;
+      gap: 15px;
     }
 
     .btn-custom {
@@ -175,7 +178,14 @@
       color: white;
     }
 
-    /* Completion message */
+    .selection-required {
+      color: #dc3545;
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: none;
+    }
+
+    /* Completion Screen */
     .completion-message {
       background: white;
       padding: 50px;
@@ -189,13 +199,6 @@
       font-size: 3rem;
       color: #28a745;
       margin-bottom: 20px;
-    }
-
-    .selection-required {
-      color: #dc3545;
-      font-size: 0.9rem;
-      margin-top: 10px;
-      font-weight: 500;
     }
 
     .loading-screen {
@@ -231,9 +234,7 @@
       </div>
       <h3>Audit Complete! 🎉</h3>
       <p class="text-muted mb-4">Thank you for completing the HubSpot Usage Audit.</p>
-      <form id="auditForm" action="/audit/submit" method="POST" style="display: none;">
-        <!-- Hidden form fields will be populated by JavaScript -->
-      </form>
+      <form id="auditForm" action="/audit/submit" method="POST" style="display: none;"></form>
       <button id="showResults" class="btn btn-custom btn-lg">View My Results</button>
     </div>
   </div>
@@ -252,7 +253,7 @@
       <div id="sectionBadge" class="section-badge"></div>
       <div id="questionText" class="question-text"></div>
 
-      <div class="progress-text small text-muted mb-2">
+      <div class="progress-text small text-muted">
         <span id="progressText">Question 1 of 82</span>
         <span id="sectionProgress" class="ms-3">Section 1 of 15</span>
       </div>
@@ -266,8 +267,7 @@
         <div class="option-btn" data-value="2">Yes (2)</div>
       </div>
 
-      <!-- Selection Required Message -->
-      <div id="selectionRequired" class="selection-required" style="display: none;">
+      <div id="selectionRequired" class="selection-required">
         <i class="fas fa-exclamation-circle me-2"></i>Please select an answer to continue
       </div>
 
@@ -283,10 +283,9 @@
   </div>
 
   <script>
-    // Questions data from EJS template
+    // Questions data
     const sections = <%- JSON.stringify(sections) %>;
-    
-    // Flatten all questions into a single array with section info
+
     let allQuestions = [];
     Object.keys(sections).forEach(sectionName => {
         sections[sectionName].forEach((question, index) => {
@@ -317,30 +316,20 @@
     const auditForm = document.getElementById('auditForm');
     const selectionRequired = document.getElementById('selectionRequired');
 
-    // Initialize
+    // Initialize first question
     updateQuestion();
 
-    // Option selection
     optionButtons.forEach(btn => {
         btn.addEventListener('click', () => {
-            // Remove selected class from all buttons
             optionButtons.forEach(b => b.classList.remove('selected'));
-            
-            // Add selected class to clicked button
             btn.classList.add('selected');
-            
-            // Store the answer
+
             const currentQuestion = allQuestions[currentQuestionIndex];
             const answerKey = `q${currentQuestion.questionIndex}_${currentQuestion.section.replace(/\s+/g, '_')}`;
             answers[answerKey] = btn.getAttribute('data-value');
-            
-            // Enable Next button
             nextBtn.disabled = false;
-            
-            // Hide selection required message
             selectionRequired.style.display = 'none';
-            
-            // Auto-advance to next question after 500ms
+
             setTimeout(() => {
                 if (currentQuestionIndex < allQuestions.length - 1) {
                     nextQuestion();
@@ -351,25 +340,16 @@
         });
     });
 
-    // Next button
     nextBtn.addEventListener('click', () => {
         const currentQuestion = allQuestions[currentQuestionIndex];
         const answerKey = `q${currentQuestion.questionIndex}_${currentQuestion.section.replace(/\s+/g, '_')}`;
-        
-        // Check if current question is answered
         if (answers[answerKey] === undefined) {
             selectionRequired.style.display = 'block';
             return;
         }
-        
-        if (currentQuestionIndex < allQuestions.length - 1) {
-            nextQuestion();
-        } else {
-            completeAudit();
-        }
+        nextQuestion();
     });
 
-    // Previous button
     prevBtn.addEventListener('click', () => {
         if (currentQuestionIndex > 0) {
             currentQuestionIndex--;
@@ -377,11 +357,8 @@
         }
     });
 
-    // Show results button
     showResultsBtn.addEventListener('click', () => {
         loadingScreen.style.display = 'flex';
-        
-        // Populate the hidden form with answers
         Object.keys(answers).forEach(key => {
             const input = document.createElement('input');
             input.type = 'hidden';
@@ -389,11 +366,7 @@
             input.value = answers[key];
             auditForm.appendChild(input);
         });
-        
-        // Submit the form
-        setTimeout(() => {
-            auditForm.submit();
-        }, 1000);
+        setTimeout(() => auditForm.submit(), 1000);
     });
 
     function nextQuestion() {
@@ -405,116 +378,61 @@
 
     function updateQuestion() {
         const question = allQuestions[currentQuestionIndex];
-        
-        // Update question text
         questionText.textContent = question.question;
-        
-        // Update section badge
         sectionBadge.textContent = question.section;
-        
-        // Update progress
+
         const overallProgress = ((currentQuestionIndex + 1) / allQuestions.length) * 100;
-        
         progressFill.style.width = `${overallProgress}%`;
         progressText.textContent = `Question ${currentQuestionIndex + 1} of ${allQuestions.length}`;
         sectionProgress.textContent = `Section ${question.sectionIndex + 1} of ${Object.keys(sections).length}`;
-        
-        // Update navigation buttons
+
         prevBtn.style.display = currentQuestionIndex > 0 ? 'block' : 'none';
-        
-        // Disable Next button until answer is selected for this question
+
         const answerKey = `q${question.questionIndex}_${question.section.replace(/\s+/g, '_')}`;
         const isAnswered = answers[answerKey] !== undefined;
         nextBtn.disabled = !isAnswered;
-        
-        // Hide selection required message initially
         selectionRequired.style.display = 'none';
-        
-        if (currentQuestionIndex === allQuestions.length - 1) {
-            nextBtn.innerHTML = 'Finish Audit <i class="fas fa-check ms-2"></i>';
-        } else {
-            nextBtn.innerHTML = 'Next <i class="fas fa-arrow-right ms-2"></i>';
-        }
-        
-        // Check if this question was already answered
-        const previousAnswer = answers[answerKey];
-        
-        // Clear all selections
+
+        nextBtn.innerHTML = currentQuestionIndex === allQuestions.length - 1 
+            ? 'Finish Audit <i class="fas fa-check ms-2"></i>' 
+            : 'Next <i class="fas fa-arrow-right ms-2"></i>';
+
         optionButtons.forEach(btn => btn.classList.remove('selected'));
-        
-        // Restore previous selection if exists
-        if (previousAnswer !== undefined) {
+        const prevAnswer = answers[answerKey];
+        if (prevAnswer !== undefined) {
             optionButtons.forEach(btn => {
-                if (btn.getAttribute('data-value') === previousAnswer) {
-                    btn.classList.add('selected');
-                }
+                if (btn.getAttribute('data-value') === prevAnswer) btn.classList.add('selected');
             });
         }
     }
 
     function completeAudit() {
-        // Hide main interface
         document.querySelector('.audit-container').style.display = 'none';
-        
-        // Show completion screen
         completionScreen.style.display = 'flex';
     }
 
-    // Keyboard navigation
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' || e.key === ' ') {
-            // Next question on right arrow or space - but only if answered
-            const currentQuestion = allQuestions[currentQuestionIndex];
-            const answerKey = `q${currentQuestion.questionIndex}_${currentQuestion.section.replace(/\s+/g, '_')}`;
-            
-            if (answers[answerKey] === undefined) {
-                selectionRequired.style.display = 'block';
-                return;
-            }
-            
-            if (currentQuestionIndex < allQuestions.length - 1) {
-                nextQuestion();
-            }
-        } else if (e.key === 'ArrowLeft') {
-            // Previous question on left arrow
-            if (currentQuestionIndex > 0) {
-                currentQuestionIndex--;
-                updateQuestion();
-            }
-        } else if (e.key >= '0' && e.key <= '2') {
-            // Select answer on number keys 0, 1, 2
+        if (e.key === 'ArrowRight' || e.key === ' ') nextBtn.click();
+        if (e.key === 'ArrowLeft') prevBtn.click();
+        if (e.key >= '0' && e.key <= '2') {
             const value = e.key;
             const currentQuestion = allQuestions[currentQuestionIndex];
             const answerKey = `q${currentQuestion.questionIndex}_${currentQuestion.section.replace(/\s+/g, '_')}`;
             answers[answerKey] = value;
-            
-            // Update UI
+
             optionButtons.forEach(btn => {
                 btn.classList.remove('selected');
-                if (btn.getAttribute('data-value') === value) {
-                    btn.classList.add('selected');
-                }
+                if (btn.getAttribute('data-value') === value) btn.classList.add('selected');
             });
-            
-            // Enable Next button
             nextBtn.disabled = false;
-            
-            // Hide selection required message
             selectionRequired.style.display = 'none';
-            
-            // Auto-advance
+
             setTimeout(() => {
-                if (currentQuestionIndex < allQuestions.length - 1) {
-                    nextQuestion();
-                } else {
-                    completeAudit();
-                }
+                if (currentQuestionIndex < allQuestions.length - 1) nextQuestion();
+                else completeAudit();
             }, 500);
         }
     });
-
-    // Initialize first question
-    updateQuestion();
   </script>
 </body>
 </html>
