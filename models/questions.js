@@ -125,7 +125,7 @@ function initializeQuestions() {
         }
         
         if (row.count === 0) {
-            console.log('Initializing questions database...');
+            // console.log('Initializing questions database...');
             const stmt = db.prepare('INSERT INTO questions (section, question, max_score) VALUES (?, ?, ?)');
             
             questions.forEach(q => {
