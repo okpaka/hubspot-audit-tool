@@ -4,110 +4,463 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lead Details - <%= lead.email %></title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; max-width: 1200px; }
-        .header { background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
-        .score-card { background: white; padding: 20px; border-radius: 10px; border: 1px solid #ddd; margin: 10px 0; }
-        .overall-score { font-size: 3em; font-weight: bold; color: #ff7a59; margin: 10px 0; }
-        .section-score { margin: 15px 0; padding: 15px; background: #f8f9fa; border-radius: 5px; border-left: 4px solid #ff7a59; }
-        .progress-bar { background: #e9ecef; border-radius: 10px; height: 20px; margin: 10px 0; }
-        .progress-fill { background: #ff7a59; height: 100%; border-radius: 10px; }
-        .btn { background: #ff7a59; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; margin: 5px; }
-        .btn-secondary { background: #6c757d; }
-        .answers-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        .answers-table th, .answers-table td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-        .answers-table th { background-color: #f8f9fa; }
-        .answer-0 { background-color: #f8d7da; } /* No - Red */
-        .answer-1 { background-color: #fff3cd; } /* Partial - Yellow */
-        .answer-2 { background-color: #d1edff; } /* Yes - Blue */
+        :root {
+            --hubspot-orange: #ff7a59;
+            --hubspot-blue: #33475b;
+            --hubspot-light-blue: #00a4bd;
+            --success-green: #28a745;
+            --warning-orange: #ffc107;
+            --danger-red: #dc3545;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+        }
+        
+        .hubspot-gradient {
+            background: linear-gradient(135deg, var(--hubspot-orange) 0%, #ff5e7d 100%);
+        }
+        
+        .score-circle {
+            width: 180px;
+            height: 180px;
+            border: 8px solid;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin: 0 auto;
+            position: relative;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .score-circle::before {
+            content: '';
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: white;
+            z-index: 1;
+        }
+        
+        .score-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+        
+        .score-value {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+        
+        .score-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            opacity: 0.8;
+        }
+        
+        .section-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            height: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .section-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+        
+        .progress {
+            height: 12px;
+            border-radius: 10px;
+            background-color: #e9ecef;
+        }
+        
+        .progress-bar {
+            border-radius: 10px;
+            transition: width 1s ease-in-out;
+        }
+        
+        .badge-priority {
+            font-size: 0.75rem;
+            padding: 0.35em 0.65em;
+        }
+        
+        .contact-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fdff 100%);
+            border: 1px solid rgba(0, 164, 189, 0.2);
+            border-radius: 15px;
+        }
+        
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-right: 15px;
+        }
+
+        .section-stats {
+            font-size: 0.85rem;
+        }
+
+        .priority-high {
+            border-left: 4px solid var(--danger-red) !important;
+        }
+
+        .priority-medium {
+            border-left: 4px solid var(--warning-orange) !important;
+        }
+
+        .priority-low {
+            border-left: 4px solid var(--success-green) !important;
+        }
+
+        .answers-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 20px 0; 
+            font-size: 0.9rem;
+        }
+        
+        .answers-table th, .answers-table td { 
+            border: 1px solid #dee2e6; 
+            padding: 12px; 
+            text-align: left; 
+        }
+        
+        .answers-table th { 
+            background-color: #f8f9fa; 
+            font-weight: 600;
+        }
+        
+        .answer-0 { background-color: rgba(220, 53, 69, 0.1); } /* No - Light Red */
+        .answer-1 { background-color: rgba(255, 193, 7, 0.1); } /* Partial - Light Yellow */
+        .answer-2 { background-color: rgba(0, 164, 189, 0.1); } /* Yes - Light Blue */
+        
+        .section-breakdown {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        .back-btn {
+            background: var(--hubspot-blue);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #253446;
+            color: white;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Lead Details</h1>
-        <a href="/admin/leads" class="btn btn-secondary">← Back to All Leads</a>
-    </div>
+    <div class="container py-4">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-1 text-primary">
+                    <i class="fas fa-user-circle me-2"></i>Lead Details
+                </h1>
+                <p class="text-muted mb-0">Comprehensive audit results for <%= lead.email %></p>
+            </div>
+            <a href="/admin/leads" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Back to Leads
+            </a>
+        </div>
 
-    <div class="score-card">
-        <h2>Contact Information</h2>
-        <p><strong>Email:</strong> <%= lead.email %></p>
-        <p><strong>Name:</strong> <%= lead.first_name %> <%= lead.last_name %></p>
-        <p><strong>Company:</strong> <%= lead.company %></p>
-        <p><strong>Submitted:</strong> <%= new Date(lead.created_at).toLocaleString() %></p>
-    </div>
-
-    <div class="score-card">
-        <h2>Overall Score</h2>
-        <div class="overall-score"><%= lead.overall_score %>%</div>
-        <p><strong><%= lead.total_achieved %> out of <%= lead.total_possible %></strong> points achieved</p>
-    </div>
-
-    <div class="score-card">
-        <h2>Section Breakdown</h2>
-        <% Object.keys(sectionScores).forEach(section => { 
-            const sectionData = sectionScores[section];
-            const percentage = sectionData.percentage;
-        %>
-            <div class="section-score">
-                <h3><%= section %></h3>
-                <p><strong><%= sectionData.score %>/<%= sectionData.max %></strong> points (<%= percentage %>%)</p>
-                <div class="progress-bar">
-                    <!-- <div class="progress-fill" style="width: <%= percentage %>%"></div> -->
+        <!-- Contact Information -->
+        <div class="card contact-card border-0 shadow-sm mb-4">
+            <div class="card-body">
+                <h5 class="card-title text-primary mb-3">
+                    <i class="fas fa-user me-2"></i>Contact Information
+                </h5>
+                <div class="row">
+                    <div class="col-md-3 mb-2">
+                        <strong><i class="fas fa-envelope me-2 text-muted"></i>Email:</strong>
+                        <span class="text-dark"><%= lead.email %></span>
+                    </div>
+                    <% if (lead.first_name || lead.last_name) { %>
+                    <div class="col-md-3 mb-2">
+                        <strong><i class="fas fa-user me-2 text-muted"></i>Name:</strong>
+                        <span class="text-dark"><%= lead.first_name %> <%= lead.last_name %></span>
+                    </div>
+                    <% } %>
+                    <% if (lead.company) { %>
+                    <div class="col-md-3 mb-2">
+                        <strong><i class="fas fa-building me-2 text-muted"></i>Company:</strong>
+                        <span class="text-dark"><%= lead.company %></span>
+                    </div>
+                    <% } %>
+                    <div class="col-md-3 mb-2">
+                        <strong><i class="fas fa-calendar me-2 text-muted"></i>Submitted:</strong>
+                        <span class="text-dark"><%= new Date(lead.created_at).toLocaleString() %></span>
+                    </div>
                 </div>
             </div>
-        <% }) %>
-    </div>
+        </div>
 
-    <div class="score-card">
-        <h2>Detailed Answers</h2>
-        <table class="answers-table">
-            <thead>
-                <tr>
-                    <th>Question</th>
-                    <th>Section</th>
-                    <th>Answer</th>
-                    <th>Score</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% Object.keys(answers).forEach(answerKey => { 
-                    const answerValue = answers[answerKey];
-                    let answerText = 'Not answered';
-                    let scoreClass = '';
+        <!-- Overall Score -->
+        <div class="hubspot-gradient text-white py-4 mb-4 rounded-3">
+            <div class="row align-items-center">
+                <div class="col-lg-8 text-center text-lg-start">
+                    <h2 class="display-5 fw-bold mb-2">HubSpot Portal Audit</h2>
+                    <p class="lead mb-3 opacity-90">Comprehensive evaluation across all functional areas</p>
+                    <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
+                        <span class="badge bg-light text-dark fs-6 py-2 px-3">
+                            <i class="fas fa-star me-1"></i>Overall Score: <%= lead.overall_score %>%
+                        </span>
+                        <span class="badge bg-light text-dark fs-6 py-2 px-3">
+                            <i class="fas fa-check-circle me-1"></i><%= lead.total_achieved %>/<%= lead.total_possible %> Points
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-center mt-4 mt-lg-0">
+                    <div class="score-circle border-<%= lead.overall_score < 40 ? 'danger' : lead.overall_score < 70 ? 'warning' : lead.overall_score < 85 ? 'success' : 'primary' %>">
+                        <div class="score-content text-<%= lead.overall_score < 40 ? 'danger' : lead.overall_score < 70 ? 'warning' : lead.overall_score < 85 ? 'success' : 'primary' %>">
+                            <div class="score-value"><%= lead.overall_score %>%</div>
+                            <div class="score-label">Overall Score</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Performance Breakdown -->
+        <div class="section-breakdown">
+            <h4 class="text-primary mb-4">
+                <i class="fas fa-th-large me-2"></i>Section Performance Breakdown
+            </h4>
+            <div class="row g-4">
+                <% 
+                const sectionStructure = {
+                    'Settings & Configuration': { questions: 10, max: 20, icon: 'fas fa-cog' },
+                    'CRM Core - Contacts': { questions: 5, max: 10, icon: 'fas fa-users' },
+                    'CRM Core - Companies': { questions: 5, max: 10, icon: 'fas fa-building' },
+                    'CRM Core - Leads': { questions: 5, max: 10, icon: 'fas fa-bullseye' },
+                    'CRM Core - Deals': { questions: 5, max: 10, icon: 'fas fa-handshake' },
+                    'CRM Core - Tickets': { questions: 5, max: 10, icon: 'fas fa-ticket-alt' },
+                    'Content Hub': { questions: 5, max: 10, icon: 'fas fa-file-alt' },
+                    'Sales Hub': { questions: 6, max: 12, icon: 'fas fa-chart-line' },
+                    'Commerce': { questions: 5, max: 10, icon: 'fas fa-shopping-cart' },
+                    'Service Hub': { questions: 6, max: 12, icon: 'fas fa-headset' },
+                    'Data Management & Ops': { questions: 5, max: 10, icon: 'fas fa-database' },
+                    'Automation': { questions: 5, max: 10, icon: 'fas fa-robot' },
+                    'Reporting & Analytics': { questions: 6, max: 12, icon: 'fas fa-chart-bar' },
+                    'Breeze (AI/UX)': { questions: 4, max: 8, icon: 'fas fa-magic' },
+                    'Development & Extensibility': { questions: 5, max: 10, icon: 'fas fa-code' }
+                };
+
+                Object.keys(sectionScores).forEach(section => { 
+                    const sectionData = sectionScores[section];
+                    const percentage = sectionData.percentage;
+                    const sectionInfo = sectionStructure[section] || { questions: 0, max: 0, icon: 'fas fa-question' };
                     
-                    if (answerValue === '0') {
-                        answerText = 'No (0)';
-                        scoreClass = 'answer-0';
-                    } else if (answerValue === '1') {
-                        answerText = 'Partial (1)';
-                        scoreClass = 'answer-1';
-                    } else if (answerValue === '2') {
-                        answerText = 'Yes (2)';
-                        scoreClass = 'answer-2';
+                    let progressClass = 'bg-danger';
+                    let badgeClass = 'bg-danger';
+                    let badgeText = 'High Priority';
+                    let priorityClass = 'priority-high';
+                    
+                    if (percentage < 40) {
+                        progressClass = 'bg-danger';
+                        badgeClass = 'bg-danger';
+                        badgeText = 'High Priority';
+                        priorityClass = 'priority-high';
+                    } else if (percentage < 70) {
+                        progressClass = 'bg-warning';
+                        badgeClass = 'bg-warning text-dark';
+                        badgeText = 'Growth Area';
+                        priorityClass = 'priority-medium';
+                    } else if (percentage < 85) {
+                        progressClass = 'bg-success';
+                        badgeClass = 'bg-success';
+                        badgeText = 'Strong Area';
+                        priorityClass = 'priority-low';
+                    } else {
+                        progressClass = 'bg-primary';
+                        badgeClass = 'bg-primary';
+                        badgeText = 'Excellent';
+                        priorityClass = 'priority-low';
                     }
-                    
-                    // Extract section from answer key
-                    const sectionMatch = answerKey.match(/q\d+_(.+)/);
-                    const section = sectionMatch ? sectionMatch[1].replace(/_/g, ' ') : 'Unknown';
-                    
-                    // Extract question number for display
-                    const questionNum = answerKey.match(/q(\d+)_/);
-                    const questionDisplay = questionNum ? `Question ${parseInt(questionNum[1]) + 1}` : 'Unknown';
                 %>
-                    <tr class="<%= scoreClass %>">
-                        <td><%= questionDisplay %></td>
-                        <td><%= section %></td>
-                        <td><%= answerText %></td>
-                        <td><strong><%= answerValue %></strong>/2</td>
-                    </tr>
+                <div class="col-xl-4 col-lg-6">
+                    <div class="card section-card h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="section-icon bg-light text-primary">
+                                    <i class="<%= sectionInfo.icon %>"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="card-title mb-1 fw-bold text-dark"><%= section %></h6>
+                                    <div class="text-muted section-stats">
+                                        <%= sectionData.score %>/<%= sectionData.max %> points • 
+                                        <%= sectionInfo.questions %> questions
+                                    </div>
+                                </div>
+                                <span class="badge <%= badgeClass %> badge-priority">
+                                    <%= badgeText %>
+                                </span>
+                            </div>
+                            
+                            <div class="progress mb-3">
+                                <div class="progress-bar <%= progressClass %>" 
+                                     role="progressbar" 
+                                     style="width: <%= percentage %>%"
+                                     aria-valuenow="<%= percentage %>" 
+                                     aria-valuemin="0" 
+                                     aria-valuemax="100">
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-<%= percentage < 40 ? 'danger' : percentage < 70 ? 'warning' : percentage < 85 ? 'success' : 'primary' %>">
+                                    <%= percentage %>%
+                                </span>
+                                <small class="text-muted">
+                                    <% if (percentage < 40) { %>
+                                        Needs attention
+                                    <% } else if (percentage < 70) { %>
+                                        Good foundation
+                                    <% } else if (percentage < 85) { %>
+                                        Strong performance
+                                    <% } else { %>
+                                        Excellent work!
+                                    <% } %>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <% }) %>
-            </tbody>
-        </table>
+            </div>
+        </div>
+
+        <!-- Detailed Answers -->
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h4 class="card-title text-primary mb-4">
+                    <i class="fas fa-list-alt me-2"></i>Detailed Answers
+                </h4>
+                <div class="table-responsive">
+                    <table class="table table-hover answers-table">
+                        <thead>
+                            <tr>
+                                <th>Question</th>
+                                <th>Section</th>
+                                <th>Answer</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% Object.keys(answers).forEach(answerKey => { 
+                                const answerValue = Array.isArray(answers[answerKey]) ? answers[answerKey][0] : answers[answerKey];
+                                let answerText = 'Not answered';
+                                let scoreClass = '';
+                                
+                                if (answerValue === '0') {
+                                    answerText = 'No';
+                                    scoreClass = 'answer-0';
+                                } else if (answerValue === '1') {
+                                    answerText = 'Partial';
+                                    scoreClass = 'answer-1';
+                                } else if (answerValue === '2') {
+                                    answerText = 'Yes';
+                                    scoreClass = 'answer-2';
+                                }
+                                
+                                // Extract section from answer key
+                                const sectionMatch = answerKey.match(/q\d+_(.+)/);
+                                const section = sectionMatch ? sectionMatch[1].replace(/_/g, ' ').replace(/&/g, '&') : 'Unknown';
+                                
+                                // Extract question number for display
+                                const questionNum = answerKey.match(/q(\d+)_/);
+                                const questionDisplay = questionNum ? `Q${parseInt(questionNum[1]) + 1}` : 'Unknown';
+                            %>
+                                <tr class="<%= scoreClass %>">
+                                    <td><strong><%= questionDisplay %></strong></td>
+                                    <td><%= section %></td>
+                                    <td>
+                                        <span class="badge <%= answerValue === '2' ? 'bg-success' : answerValue === '1' ? 'bg-warning text-dark' : 'bg-danger' %>">
+                                            <%= answerText %>
+                                        </span>
+                                    </td>
+                                    <td><strong><%= answerValue %></strong>/2</td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <a href="/admin/leads" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Back to All Leads
+            </a>
+            <div class="d-flex gap-2">
+                <a href="mailto:<%= lead.email %>?subject=HubSpot%20Audit%20Results&body=Hi%20<%= lead.first_name || 'there' %>,%0A%0AThank%20you%20for%20completing%20the%20HubSpot%20audit.%20Your%20overall%20score%20was%20<%= lead.overall_score %>%25.%0A%0AWe'd%20love%20to%20discuss%20how%20to%20improve%20your%20HubSpot%20implementation.%0A%0ABest%20regards," 
+                   class="btn btn-primary">
+                    <i class="fas fa-envelope me-2"></i>Email Lead
+                </a>
+                <button onclick="window.print()" class="btn btn-outline-secondary">
+                    <i class="fas fa-print me-2"></i>Print Report
+                </button>
+            </div>
+        </div>
     </div>
 
-    <div style="margin-top: 30px;">
-        <a href="/admin/leads" class="btn btn-secondary">← Back to All Leads</a>
-        <a href="mailto:<%= lead.email %>" class="btn" style="background: #007bff;">✉️ Email Lead</a>
-    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Animate progress bars on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const progressBars = document.querySelectorAll('.progress-bar');
+                progressBars.forEach(bar => {
+                    const width = bar.style.width;
+                    bar.style.width = '0%';
+                    setTimeout(() => {
+                        bar.style.width = width;
+                    }, 100);
+                });
+            }, 500);
+        });
+    </script>
 </body>
 </html>

@@ -44,7 +44,6 @@ router.get('/audit', (req, res) => {
 // Handle form submission with scoring logic
 router.post('/audit/submit', (req, res) => {
     const answers = req.body;
-    console.log('Received answers:', answers);
     
     // Get all questions from database to calculate scores
     db.all(`
@@ -75,7 +74,6 @@ router.post('/audit/submit', (req, res) => {
 router.post('/audit/save-lead', (req, res) => {
     const { email, first_name, last_name, company, overallScore, sectionScores, totalAchieved, totalPossible, answers } = req.body;
     
-    console.log('Received lead data:', { email, first_name, last_name, company });
     
     // Parse the data
     const parsedSectionScores = typeof sectionScores === 'string' ? JSON.parse(sectionScores) : sectionScores;
@@ -99,11 +97,8 @@ router.post('/audit/save-lead', (req, res) => {
         JSON.stringify(parsedAnswers)
     ], function(err) {
         if (err) {
-            console.error('Error saving lead:', err);
             return res.status(500).send('Error saving your information');
         }
-        
-        console.log('New lead saved:', { email, first_name, last_name, company, auditId: this.lastID });
         
         // Show detailed results page with full report
         res.render('audit-results', {
@@ -210,17 +205,13 @@ router.get('/admin/leads/export', (req, res) => {
     });
 });
 
-// EXCEL-STYLE SCORING LOGIC - Matches your Excel formula exactly
+// EXCEL-STYLE SCORING LOGIC - Fixed version with proper section name matching
 function calculateScoresExcelStyle(answers, questions) {
     const sectionScores = {};
     let totalAchieved = 0;
     let totalPossible = 0;
-    
-    console.log('=== EXCEL-STYLE SCORING START ===');
-    console.log('Total questions:', questions.length);
-    console.log('Total answers received:', Object.keys(answers).length);
-    
-    // Initialize all sections first
+
+    // 🧭 Define all expected sections with normalized names
     const sectionStructure = {
         'Settings & Configuration': { count: 10, max: 20 },
         'CRM Core - Contacts': { count: 5, max: 10 },
@@ -238,80 +229,77 @@ function calculateScoresExcelStyle(answers, questions) {
         'Breeze (AI/UX)': { count: 4, max: 8 },
         'Development & Extensibility': { count: 5, max: 10 }
     };
-    
-    // Initialize sections
+
+    // Create a mapping from normalized form keys to actual section names
+    const sectionMapping = {
+        'Settings_&_Configuration': 'Settings & Configuration',
+        'CRM_Core_-_Contacts': 'CRM Core - Contacts',
+        'CRM_Core_-_Companies': 'CRM Core - Companies',
+        'CRM_Core_-_Leads': 'CRM Core - Leads',
+        'CRM_Core_-_Deals': 'CRM Core - Deals',
+        'CRM_Core_-_Tickets': 'CRM Core - Tickets',
+        'Content_Hub': 'Content Hub',
+        'Sales_Hub': 'Sales Hub',
+        'Commerce': 'Commerce', // This one works already
+        'Service_Hub': 'Service Hub',
+        'Data_Management_&_Ops': 'Data Management & Ops',
+        'Automation': 'Automation', // This one works already
+        'Reporting_&_Analytics': 'Reporting & Analytics',
+        'Breeze_(AI/UX)': 'Breeze (AI/UX)',
+        'Development_&_Extensibility': 'Development & Extensibility'
+    };
+
+    // Initialize section scores
     Object.keys(sectionStructure).forEach(section => {
         sectionScores[section] = {
             achieved: 0,
             possible: sectionStructure[section].max,
             questionCount: sectionStructure[section].count
         };
+        totalPossible += sectionStructure[section].max;
     });
+
     
-    // Calculate scores for each question (matches Excel columns C and D)
-    questions.forEach((question, index) => {
-        // Try multiple key formats to find the answer
-        const possibleKeys = [
-            `q${index}_${question.section.replace(/\s+/g, '_')}`,
-            `q${index}_${question.section.replace(/\s+/g, '_').replace(/[&()-]/g, '')}`,
-            `q${index}`
-        ];
+    // 🧮 Calculate per-section scores based on actual form answers
+    Object.keys(answers).forEach(answerKey => {
+        // Handle array values (take the first one)
+        let answerValue = answers[answerKey];
+        if (Array.isArray(answerValue)) {
+            answerValue = answerValue[0];
+        }
+        answerValue = parseInt(answerValue) || 0;
         
-        let userScore = 0;
-        let answerKeyUsed = 'not found';
-        
-        // Find which key exists in answers (Excel Column C)
-        for (const key of possibleKeys) {
-            if (answers[key] !== undefined && answers[key] !== null) {
-                userScore = parseInt(answers[key]) || 0;
-                answerKeyUsed = key;
-                break;
+        // Extract section name from answer key (format: q0_Settings_&_Configuration)
+        const match = answerKey.match(/q\d+_(.+)/);
+        if (match) {
+            const formSectionName = match[1];
+            const actualSectionName = sectionMapping[formSectionName];
+            
+            if (actualSectionName && sectionScores[actualSectionName]) {
+                sectionScores[actualSectionName].achieved += answerValue;
+                totalAchieved += answerValue;
+            } else {
             }
+        } else {
         }
-        
-        const maxScore = question.max_score || 2; // Excel Column D
-        
-        // Add to section totals (Excel Column E = SUM(C2:C11) for Settings section)
-        if (sectionScores[question.section]) {
-            sectionScores[question.section].achieved += userScore;
-            // Note: possible is already set from section structure above
-        }
-        
-        // Add to overall totals
-        totalAchieved += userScore;
-        totalPossible += maxScore;
-        
-        console.log(`Q${index}: "${question.section}" - Key: ${answerKeyUsed}, Score: ${userScore}/${maxScore}`);
     });
-    
-    console.log('=== SECTION TOTALS (Excel Column E) ===');
-    Object.keys(sectionScores).forEach(section => {
-        const data = sectionScores[section];
-        console.log(`${section}: ${data.achieved}/${data.possible} (${data.questionCount} questions)`);
-    });
-    
-    console.log(`Overall: ${totalAchieved}/${totalPossible}`);
-    
-    // Calculate overall percentage (Excel Formula: =(E85/D85))
-    const overallScore = totalPossible > 0 ? Math.round((totalAchieved / totalPossible) * 100) : 0;
-    
-    // Format section scores for display
+
+    // 🔢 Compute percentages per section
     const formattedSectionScores = {};
     Object.keys(sectionScores).forEach(section => {
-        const sectionData = sectionScores[section];
+        const s = sectionScores[section];
+        const percentage = s.possible > 0 ? Math.round((s.achieved / s.possible) * 100) : 0;
+        
         formattedSectionScores[section] = {
-            score: sectionData.achieved,
-            max: sectionData.possible,
-            percentage: sectionData.possible > 0 ? 
-                Math.round((sectionData.achieved / sectionData.possible) * 100) : 0,
-            questionCount: sectionData.questionCount
+            score: s.achieved,
+            max: s.possible,
+            percentage: percentage,
+            questionCount: s.questionCount
         };
     });
-    
-    console.log('Overall Score (E85/D85):', overallScore + '%');
-    console.log('Expected: 45/164 = 27.44% (rounded)');
-    console.log('=== EXCEL-STYLE SCORING END ===');
-    
+
+    const overallScore = totalPossible > 0 ? Math.round((totalAchieved / totalPossible) * 100) : 0;
+
     return {
         overallScore,
         sectionScores: formattedSectionScores,
@@ -353,7 +341,8 @@ router.get('/test-excel-scoring', (req, res) => {
         }
         
         const scores = calculateScoresExcelStyle(excelExampleAnswers, questions);
-        
+
+
         res.json({
             message: 'Excel-style scoring test',
             expectedOverall: '27% (45/164 = 27.44%)',

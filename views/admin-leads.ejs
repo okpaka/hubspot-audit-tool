@@ -3,81 +3,410 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - HubSpot Audit Leads</title>
+    <title>Admin Dashboard - HubSpot Audit Leads</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-        th { background-color: #f8f9fa; }
-        .badge { 
-            background: #ff7a59; 
-            color: white; 
-            padding: 4px 12px; 
-            border-radius: 12px; 
-            font-size: 0.9em;
+        :root {
+            --hubspot-orange: #ff7a59;
+            --hubspot-blue: #33475b;
+            --hubspot-light-blue: #00a4bd;
+            --success-green: #28a745;
+            --warning-orange: #ffc107;
+            --danger-red: #dc3545;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+        }
+        
+        .hubspot-gradient {
+            background: linear-gradient(135deg, var(--hubspot-orange) 0%, #ff5e7d 100%);
+        }
+        
+        .admin-header {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .stats-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+        
+        .stats-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 15px;
+        }
+        
+        .stats-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+        
+        .stats-label {
+            font-size: 1rem;
+            color: #6c757d;
+            font-weight: 500;
+        }
+        
+        .leads-table {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        
+        .table thead th {
+            background-color: var(--hubspot-blue);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            font-weight: 600;
+        }
+        
+        .table tbody td {
+            padding: 15px 20px;
+            vertical-align: middle;
+            border-color: #f1f3f4;
+        }
+        
+        .table tbody tr {
+            transition: all 0.2s ease;
+        }
+        
+        .table tbody tr:hover {
+            background-color: #f8fdff;
+        }
+        
+        .score-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
             display: inline-block;
         }
-        .score-low { background: #dc3545; }
-        .score-medium { background: #ffc107; color: black; }
-        .score-high { background: #28a745; }
-        .score-excellent { background: #007bff; }
         
+        .score-low { 
+            background: rgba(220, 53, 69, 0.1); 
+            color: var(--danger-red);
+        }
+        .score-medium { 
+            background: rgba(255, 193, 7, 0.1); 
+            color: #856404;
+        }
+        .score-high { 
+            background: rgba(40, 167, 69, 0.1); 
+            color: var(--success-green);
+        }
+        .score-excellent { 
+            background: rgba(0, 123, 255, 0.1); 
+            color: #007bff;
+        }
+        
+        .action-btn {
+            background: var(--hubspot-light-blue);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            background: #0088a3;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .export-btn {
+            background: var(--hubspot-orange);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+        
+        .empty-state-icon {
+            font-size: 4rem;
+            color: #dee2e6;
+            margin-bottom: 20px;
+        }
+        
+        .back-btn {
+            background: var(--hubspot-blue);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: #253446;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-box input {
+            padding-left: 40px;
+            border-radius: 10px;
+            border: 1px solid #e1e5e9;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+        }
     </style>
 </head>
 <body>
-    <h1>HubSpot Audit Leads</h1>
-    <p>Total leads: <strong><%= leads.length %></strong></p>
-    
-    
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Email</th>
-                <th>Name</th>
-                <th>Company</th>
-                <th>Score</th>
-                <th>Points</th>
-                <th>Date</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% leads.forEach(lead => { 
-                let scoreClass = 'score-low';
-                if (lead.overall_score >= 80) scoreClass = 'score-excellent';
-                else if (lead.overall_score >= 60) scoreClass = 'score-high';
-                else if (lead.overall_score >= 40) scoreClass = 'score-medium';
-            %>
-                <tr>
-                    <td><%= lead.id %></td>
-                    <td><strong><%= lead.email %></strong></td>
-                    <td><%= lead.first_name %> <%= lead.last_name %></td>
-                    <td><%= lead.company %></td>
-                    <td>
-                        <span class="badge <%= scoreClass %>">
-                            <%= lead.overall_score %>%
-                        </span>
-                    </td>
-                    <td><%= lead.total_achieved %>/<%= lead.total_possible %></td>
-                    <td><%= new Date(lead.created_at).toLocaleDateString() %></td>
-                    <td>
-                        <a href="/admin/leads/<%= lead.id %>">View Details</a>
-                    </td>
-                </tr>
-            <% }) %>
-        </tbody>
-    </table>
-    
-    <% if (leads.length === 0) { %>
-        <div style="text-align: center; padding: 40px; color: #666;">
-            <h3>No leads yet</h3>
-            <p>Leads will appear here once users complete the audit and submit their email.</p>
-            <a href="/audit">Test the Audit</a>
+    <div class="container py-4">
+        <!-- Header -->
+        <div class="admin-header">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="h3 mb-2 text-primary">
+                        <i class="fas fa-tachometer-alt me-2"></i>Admin Dashboard
+                    </h1>
+                    <p class="text-muted mb-0">Manage and analyze HubSpot audit submissions</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <a href="/" class="back-btn">
+                        <i class="fas fa-arrow-left me-1"></i>Back to Audit
+                    </a>
+                </div>
+            </div>
         </div>
-    <% } %>
+
+        <!-- Stats Cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-xl-3 col-md-6">
+                <div class="stats-card">
+                    <div class="stats-icon bg-primary bg-opacity-10 text-primary">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stats-value text-primary"><%= leads.length %></div>
+                    <div class="stats-label">Total Leads</div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="stats-card">
+                    <div class="stats-icon bg-success bg-opacity-10 text-success">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stats-value text-success">
+                        <% 
+                        const avgScore = leads.length > 0 
+                            ? Math.round(leads.reduce((sum, lead) => sum + lead.overall_score, 0) / leads.length) 
+                            : 0;
+                        %>
+                        <%= avgScore %>%
+                    </div>
+                    <div class="stats-label">Average Score</div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="stats-card">
+                    <div class="stats-icon bg-warning bg-opacity-10 text-warning">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <div class="stats-value text-warning">
+                        <%
+                        const highPerformers = leads.filter(lead => lead.overall_score >= 70).length;
+                        %>
+                        <%= highPerformers %>
+                    </div>
+                    <div class="stats-label">High Performers (70%+)</div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="stats-card">
+                    <div class="stats-icon bg-danger bg-opacity-10 text-danger">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="stats-value text-danger">
+                        <%
+                        const lowPerformers = leads.filter(lead => lead.overall_score < 40).length;
+                        %>
+                        <%= lowPerformers %>
+                    </div>
+                    <div class="stats-label">Need Help (<40%)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leads Table -->
+        <div class="leads-table">
+            <div class="p-4 border-bottom">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <h5 class="mb-0 text-primary">
+                            <i class="fas fa-list me-2"></i>Audit Leads
+                        </h5>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex flex-column flex-md-row justify-content-md-end gap-3">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" class="form-control" placeholder="Search leads...">
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <% if (leads.length > 0) { %>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Contact</th>
+                            <th>Company</th>
+                            <th>Score</th>
+                            <th>Points</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% leads.forEach(lead => { 
+                            let scoreClass = 'score-low';
+                            if (lead.overall_score >= 80) scoreClass = 'score-excellent';
+                            else if (lead.overall_score >= 60) scoreClass = 'score-high';
+                            else if (lead.overall_score >= 40) scoreClass = 'score-medium';
+                        %>
+                            <tr>
+                                <td class="fw-bold">#<%= lead.id %></td>
+                                <td>
+                                    <div class="fw-bold"><%= lead.email %></div>
+                                    <div class="text-muted small">
+                                        <%= lead.first_name %> <%= lead.last_name %>
+                                    </div>
+                                </td>
+                                <td><%= lead.company || '—' %></td>
+                                <td>
+                                    <span class="score-badge <%= scoreClass %>">
+                                        <i class="fas fa-chart-pie me-1"></i><%= lead.overall_score %>%
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="fw-bold"><%= lead.total_achieved %>/<%= lead.total_possible %></span>
+                                </td>
+                                <td>
+                                    <span class="text-muted"><%= new Date(lead.created_at).toLocaleDateString() %></span>
+                                </td>
+                                <td>
+                                    <a href="/admin/leads/<%= lead.id %>" class="action-btn">
+                                        <i class="fas fa-eye me-1"></i>View
+                                    </a>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+            <% } else { %>
+            <div class="empty-state">
+                <div class="empty-state-icon">
+                    <i class="fas fa-inbox"></i>
+                </div>
+                <h4 class="mb-3">No leads yet</h4>
+                <p class="mb-4">Leads will appear here once users complete the audit and submit their email.</p>
+                <a href="/audit" class="btn btn-primary">
+                    <i class="fas fa-play-circle me-2"></i>Test the Audit
+                </a>
+            </div>
+            <% } %>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-4 text-center text-muted">
+            <p>HubSpot Audit Tool Admin • Generated on <%= new Date().toLocaleDateString() %></p>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-    <br>
-    <a href="/">Back to Audit</a>
+    <script>
+        // Simple search functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.querySelector('.search-box input');
+            const tableRows = document.querySelectorAll('tbody tr');
+            
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                
+                tableRows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    if (text.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
