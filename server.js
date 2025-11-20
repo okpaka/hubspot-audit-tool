@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 3000;
 // Vercel-specific configuration
 app.set('trust proxy', 1);
 
+
 // Session middleware
 app.use(session({
     secret: process.env.SESSION_SECRET || 'hubspot-audit-vercel-secret',
