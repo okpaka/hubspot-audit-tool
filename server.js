@@ -37,7 +37,9 @@ app.use(express.json());
 
 // Routes
 app.use('/', require('./routes/audit'));
-
+app.get('/gethubspothelp', (req, res) => {
+  res.render('gethubspothelp'); // This will render gethubspothelp.ejs
+});
 // Vercel requires module.exports
 module.exports = app;
 

@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get HubSpot Help | Resa Gooding</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --hubspot-orange: #ff7a59;
+      --hubspot-blue: #33475b;
+      --hubspot-light-blue: #00a4bd;
+      --dark-blue: #1a2b41;
+    }
+    
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      color: #33475b;
+    }
+    
+    .btn-hubspot {
+      background-color: var(--hubspot-orange);
+      color: #fff;
+      border: none;
+      font-weight: 600;
+      padding: 12px 30px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-hubspot:hover {
+      background-color: #ff5c33;
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 122, 89, 0.3);
+    }
+    
+    .btn-outline-hubspot {
+      border: 2px solid var(--hubspot-orange);
+      color: var(--hubspot-orange);
+      background: transparent;
+      font-weight: 600;
+      padding: 12px 30px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-outline-hubspot:hover {
+      background-color: var(--hubspot-orange);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+    
+    .hero-section {
+      background: linear-gradient(135deg, var(--dark-blue) 0%, #2c3e50 100%);
+      color: white;
+      padding: 80px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(255,122,89,0.1) 0%, rgba(255,122,89,0) 70%);
+      border-radius: 50%;
+      z-index: 0;
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .section-title {
+      color: var(--hubspot-blue);
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    
+    .section-title:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 60px;
+      height: 4px;
+      background: var(--hubspot-orange);
+      border-radius: 2px;
+    }
+    
+    .section-title.center:after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    .intro-card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      padding: 40px;
+      margin-bottom: 40px;
+      background: white;
+    }
+    
+    .service-card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      height: 100%;
+      overflow: hidden;
+    }
+    
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+    }
+    
+    .service-img {
+      height: 200px;
+      object-fit: cover;
+      width: 100%;
+    }
+    
+    .role-card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      height: 100%;
+      padding: 30px;
+      text-align: center;
+    }
+    
+    .role-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+    }
+    
+    .role-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin: 0 auto 20px;
+    }
+    
+    .resource-card {
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      text-align: center;
+      padding: 25px 15px;
+      height: 100%;
+    }
+    
+    .resource-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+    
+    .resource-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin: 0 auto 15px;
+    }
+    
+    .video-card {
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .video-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+    
+    .video-thumbnail {
+      height: 180px;
+      background: #f8f9fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6c757d;
+      font-size: 3rem;
+    }
+    
+    .story-section {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border-radius: 15px;
+      padding: 40px;
+      margin: 40px 0;
+    }
+    
+    .story-img {
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+    
+    .contact-form {
+      background: white;
+      border-radius: 15px;
+      padding: 40px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+    
+    .form-control {
+      border-radius: 8px;
+      padding: 12px 15px;
+      border: 1px solid #e1e5e9;
+    }
+    
+    .form-control:focus {
+      border-color: var(--hubspot-orange);
+      box-shadow: 0 0 0 0.2rem rgba(255, 122, 89, 0.25);
+    }
+    
+    .social-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--hubspot-blue);
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 10px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    
+    .social-icon:hover {
+      background: var(--hubspot-orange);
+      transform: translateY(-3px);
+      color: white;
+    }
+    
+    .footer {
+      background-color: var(--dark-blue);
+      color: white;
+      padding: 60px 0 30px;
+    }
+    
+    .testimonial-card {
+      border-left: 4px solid var(--hubspot-orange);
+      background: white;
+      border-radius: 0 10px 10px 0;
+      padding: 25px;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+      margin: 20px 0;
+    }
+    
+    .book-card {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+    
+    .book-cover {
+      max-width: 200px;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      margin: 0 auto 20px;
+    }
+
+    .audit-option {
+      border: 2px solid #e9ecef;
+      border-radius: 10px;
+      padding: 25px;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .audit-option:hover {
+      border-color: var(--hubspot-orange);
+      background-color: rgba(255,122,89,0.03);
+    }
+
+    .audit-option.active {
+      border-color: var(--hubspot-orange);
+      background-color: rgba(255,122,89,0.05);
+    }
+
+    .audit-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      background: rgba(0,0,0,0.03);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3 sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="/">
+        <i class="fas fa-hands-helping me-2"></i>Revops Reset
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="#who-i-help">Who I Help</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#partners">For Partners</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#customers">For Customers</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#resources">Resources</a>
+          </li> -->
+          <li class="nav-item">
+  <a class="btn btn-outline-hubspot ms-2" href="#" data-bs-toggle="modal" data-bs-target="#auditModal">
+    Start Free Audit
+  </a>
+</li>
+<li class="nav-item">
+  <a class="btn btn-hubspot ms-2" href="https://calendly.com/resa-logv/1-1-strategy-call-with-resa">Book a Meeting</a>
+</li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-8 hero-content">
+          <h1 class="display-4 fw-bold mb-4">Hi there, I'm Resa</h1>
+          <p class="lead mb-4">I'm so glad you're here—which means you must be looking for a little help with HubSpot, right? Well, you're in the perfect place.</p>
+          <p class="mb-5">To get things rolling, I've got a quick form for you. It'll help me know exactly what you need, so when we connect, we're ready to dive in, begin the work and make some magic happen.</p>
+          <div class="d-flex flex-wrap gap-3 align-items-center">
+            <a href="https://calendly.com/resa-logv/1-1-strategy-call-with-resa" class="btn btn-hubspot btn-lg">
+              Yes, I am ready... <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+            <div class="d-flex">
+              <a href="https://www.linkedin.com/in/resagooding/" class="social-icon">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+              <a href="https://www.instagram.com/resagooding/" class="social-icon">
+                <i class="fab fa-instagram"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 text-center mt-5 mt-lg-0">
+          <img src="https://static.wixstatic.com/media/1a0de1_35f5c5d32ca346f0889a2b6f29166669~mv2.jpg/v1/fill/w_573,h_1173,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/1a0de1_35f5c5d32ca346f0889a2b6f29166669~mv2.jpg" alt="Resa Gooding" class="img-fluid rounded-circle shadow">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who I Help Section -->
+  <section id="who-i-help" class="py-5 bg-light">
+    <div class="container">
+      <div class="intro-card">
+        <h2 class="section-title">Who Thrives with my Guidance</h2>
+        <p class="mb-4">If you're wondering who gets the most out of working with me, I'll be upfront and tell it like it is—it's folks who want to do more than just "get by" with HubSpot. With over a decade of experience working with HubSpot partners globally, plus running a successful HubSpot Diamond partner agency in Israel before joining the HubSpot team at its European headquarters in Ireland, I've got a unique angle to help both HubSpot customers and partners reach the next level.</p>
+        
+        <div class="row g-4 mt-4">
+          <div class="col-lg-6">
+            <div class="role-card bg-white">
+              <div class="role-icon bg-primary bg-opacity-10 text-primary">
+                <i class="fas fa-handshake"></i>
+              </div>
+              <h3>Partners</h3>
+              <p class="mb-4">If you're a HubSpot partner, you're in the right place. I was leader of the team that brought initiatives like the Accreditations program and Partner Scaled Onboarding (PSO) to life —programmes that are key to your growth and HubSpot's bigger picture. If you're all in on being a successful HubSpot partner, mastering these is a must, and I'm here to guide you every step of the way.</p>
+              <a href="#partners" class="btn btn-hubspot">Explore Partner Services</a>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="role-card bg-white">
+              <div class="role-icon bg-success bg-opacity-10 text-success">
+                <i class="fas fa-users"></i>
+              </div>
+              <h3>Customers</h3>
+              <p class="mb-4">Let's be real—a CRM isn't just a "nice to have" anymore; it's an absolute game-changer. But most businesses are only scratching the surface. Maybe that's you and the reason why you're here. I've spent the past ten years setting up hundreds of CRM systems across countless industries, and I've seen it time and again: people aren't getting the full juice out of their CRM.</p>
+              <a href="#customers" class="btn btn-hubspot">Explore Customer Services</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="text-center mt-5">
+          <p class="lead">Ready to see what we can do together? Click below to discover how we can tailor solutions to fit your needs as a HubSpot partner or customer. Let's get started!</p>
+          <h4 class="mb-4">Click the option that matches your role</h4>
+          <div class="d-flex flex-column flex-md-row justify-content-center gap-4">
+            <a href="#partners" class="btn btn-outline-hubspot btn-lg">
+              <i class="fas fa-handshake me-2"></i>I am a Partner
+            </a>
+            <a href="#customers" class="btn btn-outline-hubspot btn-lg">
+              <i class="fas fa-users me-2"></i>I am a Customer
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Partners Section -->
+  <section id="partners" class="py-5 bg-white">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-10 mx-auto">
+          <h2 class="section-title center mb-5">How I Help HubSpot Partners Thrive</h2>
+          <p class="lead text-center mb-5">With more than a decade of experience collaborating with HubSpot partners around the world, running a successful HubSpot Diamond agency in Israel, and being part of the team in Europe that built partner service programmes at HubSpot—I've seen and solved it all. My specialty? Delivering real value to partners in the areas that matter most.</p>
+        </div>
+      </div>
+      
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <div class="service-card">
+            <img src="https://static.wixstatic.com/media/1a0de1_74db7ee02ffb4126b4fe509e25f1a92b~mv2.jpg/v1/crop/x_100,y_0,w_4021,h_4024/fill/w_242,h_242,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Resa%20Gooding.jpg" alt="Accreditations Consultation" class="service-img">
+            <div class="p-4">
+              <h4>Accreditations Consultation</h4>
+              <p class="mb-3">The Accreditations consultation is a 30-minute Zoom session where you can address any questions or concerns about the Accreditations process and your application.</p>
+              <small class="text-muted">Please note that this is not a service to submit your accreditation on your behalf—it's a focused session to review and clarify any uncertainties you might have.</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="service-card">
+            <img src="https://static.wixstatic.com/media/1a0de1_367c834a6c5445e88f40ca1b9a1ef4b4~mv2.jpg/v1/crop/x_277,y_216,w_928,h_928/fill/w_242,h_242,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Resa%20Gooding.jpg" alt="Business Consulting" class="service-img">
+            <div class="p-4">
+              <h4>Business Consulting</h4>
+              <p class="mb-3">Growing a successful HubSpot agency involves many moving parts—from building a skilled and motivated team to attracting the right clients and effectively navigating the HubSpot ecosystem to leverage its resources.</p>
+              <p>During this 1-hour consultation, I'll share valuable advice and proven strategies from my own success to help guide you on your journey.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="service-card">
+            <img src="https://static.wixstatic.com/media/1a0de1_790a038773f847bc8eef88f45d8e3305~mv2.jpeg/v1/crop/x_890,y_62,w_306,h_306/fill/w_242,h_242,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/resa%20workshop%202.jpeg" alt="Team Training" class="service-img">
+            <div class="p-4">
+              <h4>Team Training</h4>
+              <p class="mb-3">In 2025, I'll be offering limited slots for Team Training sessions tailored specifically for partner employees.</p>
+              <p>This focused training is designed to help your team attract the right clients and, most importantly, convert new customers into long-term retainer clients—the foundation of any successful agency.</p>
+              <small class="text-muted">If you're interested in this specialized training, book a 30-minute call to discuss the details.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row mt-5">
+        <div class="col-lg-8 mx-auto">
+          <div class="text-center p-4 bg-light rounded-3">
+            <h3 class="mb-3">- Just for You -</h3>
+            <p class="lead mb-4">Let's Talk about your growth</p>
+            <a href="https://calendly.com/resa-logv/1-1-strategy-call-with-resa" class="btn btn-hubspot btn-lg">Book Your Session Here</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row mt-5">
+        <div class="col-lg-10 mx-auto">
+          <h3 class="mb-4 text-center">Additional Resources for Partners</h3>
+          <p class="text-center mb-4">I encourage you to explore the wealth of resources available to you within the HubSpot ecosystem as a partner.</p>
+          
+          <div class="row g-4">
+            <div class="col-md-6">
+              <div class="resource-card bg-white">
+                <div class="resource-icon bg-primary bg-opacity-10 text-primary">
+                  <i class="fas fa-home"></i>
+                </div>
+                <h5>Your PDM</h5>
+                <p class="small">You can find their contact details in your portal</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="resource-card bg-white">
+                <div class="resource-icon bg-warning bg-opacity-10 text-warning">
+                  <i class="fas fa-users"></i>
+                </div>
+                <h5>Accreditations Team</h5>
+                <p class="small">Don't hesitate to email accreditations@hubspot.com</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Customers Section -->
+  <section id="customers" class="py-5 bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-10 mx-auto">
+          <h2 class="section-title center mb-5">How I Help Customers Get the Most Out of HubSpot</h2>
+          <p class="lead text-center mb-5">You've invested in a powerful platform like HubSpot to grow your business—but maybe you're still feeling stuck when it comes to fully unlocking its potential. If you're like many businesses I've worked with, you might be struggling with some of these growth pains:</p>
+          
+          <div class="row g-4 mb-5">
+            <div class="col-md-4">
+              <div class="text-center p-3">
+                <div class="mb-3">
+                  <i class="fas fa-eye-slash fa-2x text-primary"></i>
+                </div>
+                <h5>Lack of Visibility into Sales Team Activities</h5>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="text-center p-3">
+                <div class="mb-3">
+                  <i class="fas fa-question-circle fa-2x text-warning"></i>
+                </div>
+                <h5>Uncertainty About Lead Quality</h5>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="text-center p-3">
+                <div class="mb-3">
+                  <i class="fas fa-puzzle-piece fa-2x text-danger"></i>
+                </div>
+                <h5>Integration Challenges with Custom Systems</h5>
+              </div>
+            </div>
+          </div>
+          
+          <p class="text-center mb-5">Sound familiar? Know that you are not alone. What makes you stand out is your desire to get help. With my in-depth knowledge of HubSpot and a tailored approach to your challenges, I can help turn your roadblocks into stepping stones by transforming HubSpot into the growth engine you know it can be. Scroll down to explore the services I offer and see how we can work together to make your CRM platform the powerful engine it can be.</p>
+        </div>
+      </div>
+      
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <div class="service-card">
+            <img src="https://static.wixstatic.com/media/1a0de1_700a664eb66540ab98893e8fcc1af5fa~mv2.jpg/v1/crop/x_2466,y_0,w_3014,h_3022/fill/w_242,h_242,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Resa%20Gooding.jpg" alt="HubSpot Consultation" class="service-img">
+            <div class="p-4">
+              <h4>HubSpot Consultation</h4>
+              <p class="mb-3">Feel free to book a 30-minute call with me to discuss any challenges or brainstorm ideas.</p>
+              <p>I'll provide guidance and direction to help your internal team make progress. If needed, I'm also happy to recommend a trusted solution partner who can assist further.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="service-card">
+            <img src="https://static.wixstatic.com/media/be2c632522231bd3c200e58f5dc4b4a4.jpg/v1/crop/x_171,y_0,w_683,h_683/fill/w_242,h_242,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Checklist%20.jpg" alt="HubSpot Audit" class="service-img">
+            <div class="p-4">
+              <div class="d-flex align-items-center mb-2">
+                <i class="fas fa-clipboard-check text-primary me-2"></i>
+                <h4 class="mb-0">HubSpot Audit</h4>
+              </div>
+              <p class="mb-3">If your system isn't providing the reports you need, it's a clear sign it's time for an audit.</p>
+              <p>I offer a comprehensive 10-day audit that delivers a detailed report highlighting what's not working in your system and provides clear, actionable steps to fix it.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="service-card">
+            <img src="https://static.wixstatic.com/media/1a0de1_1985374626b945af9fee9de901b28e19~mv2.jpg/v1/crop/x_745,y_86,w_313,h_314/fill/w_242,h_242,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/me%20teaching.jpg" alt="HubSpot Team Training" class="service-img">
+            <div class="p-4">
+              <h4>HubSpot Team Training</h4>
+              <p class="mb-3">As a company leader, if you're unsure whether your sales team's tactics are truly effective, it's often a sign that your team isn't using HubSpot correctly.</p>
+              <p>My tailored training not only helps your sales team understand how to use HubSpot but ensures the system is configured to give you the visibility and insights you need to evaluate and improve their performance.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row mt-5">
+        <div class="col-lg-8 mx-auto">
+          <div class="text-center p-4 bg-white rounded-3 shadow-sm">
+            <h3 class="mb-3">- Exclusive offer -</h3>
+            <p class="lead mb-4">Schedule your Intro Call</p>
+            <a href="https://calendly.com/resa-logv/1-1-strategy-call-with-resa" class="btn btn-hubspot btn-lg">Book Your Session Here</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row mt-5">
+        <div class="col-lg-10 mx-auto">
+          <h3 class="mb-4 text-center">Additional Resources for Customers</h3>
+          <p class="text-center mb-4">HubSpot offers a wealth of resources designed to help customers. Be sure to explore them, as they provide valuable information and insights to support your success.</p>
+          
+          <div class="row g-4">
+            <div class="col-md-3 col-6">
+              <div class="resource-card bg-white">
+                <div class="resource-icon bg-primary bg-opacity-10 text-primary">
+                  <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h6>HubSpot Academy</h6>
+              </div>
+            </div>
+            <div class="col-md-3 col-6">
+              <div class="resource-card bg-white">
+                <div class="resource-icon bg-success bg-opacity-10 text-success">
+                  <i class="fas fa-handshake"></i>
+                </div>
+                <h6>HubSpot Service Providers</h6>
+              </div>
+            </div>
+            <div class="col-md-3 col-6">
+              <div class="resource-card bg-white">
+                <div class="resource-icon bg-warning bg-opacity-10 text-warning">
+                  <i class="fas fa-comments"></i>
+                </div>
+                <h6>HubSpot Community</h6>
+              </div>
+            </div>
+            <div class="col-md-3 col-6">
+              <div class="resource-card bg-white">
+                <div class="resource-icon bg-info bg-opacity-10 text-info">
+                  <i class="fas fa-users"></i>
+                </div>
+                <h6>HubSpot User Groups</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resources Section -->
+  <section id="resources" class="py-5 bg-white">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-10 mx-auto">
+          <h2 class="section-title center mb-5">The Ultimate HubSpot Handbook</h2>
+          
+          <div class="row align-items-center">
+            <div class="col-lg-4 mb-4 mb-lg-0">
+              <div class="book-card">
+                <img src="https://static.wixstatic.com/media/1a0de1_638cc7c9395a475c84b2bd261f0187cd~mv2.png/v1/fill/w_650,h_650,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/1a0de1_638cc7c9395a475c84b2bd261f0187cd~mv2.png" alt="HubSpot Handbook" class="book-cover">
+                <h4 class="mb-3">Empowering Marketing and Sales with HubSpot</h4>
+                <p class="mb-4">Drawing on over a decade of experience working across multiple sectors and industries all across the globe, I've written the only training handbook to help you think strategically about configuring your system to meet your unique needs.</p>
+                <a href="https://www.amazon.com/Empowering-Marketing-Sales-HubSpot-correctly-ebook/dp/B08LH9NRQ8/ref=sr_1_1?crid=16BRWOHOAKUPX&keywords=resa+gooding&qid=1656793868&sprefix=resa+gooding%2Caps%2C174&sr=8-1" class="btn btn-hubspot">Purchase on Amazon</a>
+              </div>
+            </div>
+            <div class="col-lg-8">
+              <div class="ps-lg-4">
+                <p class="mb-4">We're talking tips, tools, and tonic.</p>
+                <p class="mb-4">Published in 2022, this book focuses on foundational setup processes and doesn't cover newer features, particularly those related to AI, which HubSpot has significantly advanced since then. While this book is being updated to address AI, there are many trusted partners who can guide you through those developments.</p>
+                <p>Consider this handbook the perfect path to get you the solid jumpstart you need.</p>
+                <div class="mt-4">
+                  <a href="https://www.amazon.com/Empowering-Marketing-Sales-HubSpot-correctly-ebook/dp/B08LH9NRQ8/ref=sr_1_1?crid=16BRWOHOAKUPX&keywords=resa+gooding&qid=1656793868&sprefix=resa+gooding%2Caps%2C174&sr=8-1" class="btn btn-outline-hubspot">You can purchase the book on Amazon here</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+     <div class="row mt-5">
+  <div class="col-lg-10 mx-auto">
+    <h3 class="section-title center mb-5">Thought Leadership Discussions</h3>
+    
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <div class="video-card bg-light">
+          <div class="video-thumbnail" data-video-id="video1">
+            <i class="fas fa-play-circle"></i>
+            <img src="https://via.placeholder.com/300x180" alt="Video thumbnail" class="d-none">
+          </div>
+          <div class="p-3">
+            <h6 class="mb-2">Recession Proof GTM Strategies with Sangram Vajre</h6>
+            <button class="btn btn-sm btn-outline-primary w-100 play-video-btn" data-video-id="video1">Play Video</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="video-card bg-light">
+          <div class="video-thumbnail" data-video-id="video2">
+            <i class="fas fa-play-circle"></i>
+            <img src="https://via.placeholder.com/300x180" alt="Video thumbnail" class="d-none">
+          </div>
+          <div class="p-3">
+            <h6 class="mb-2">How to build a profitable company during a recession</h6>
+            <button class="btn btn-sm btn-outline-primary w-100 play-video-btn" data-video-id="video2">Play Video</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="video-card bg-light">
+          <div class="video-thumbnail" data-video-id="video3">
+            <i class="fas fa-play-circle"></i>
+            <img src="https://via.placeholder.com/300x180" alt="Video thumbnail" class="d-none">
+          </div>
+          <div class="p-3">
+            <h6 class="mb-2">Recession Proof Inbound Strategies with Marcus Sheridan</h6>
+            <button class="btn btn-sm btn-outline-primary w-100 play-video-btn" data-video-id="video3">Play Video</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="video-card bg-light">
+          <div class="video-thumbnail" data-video-id="video4">
+            <i class="fas fa-play-circle"></i>
+            <img src="https://via.placeholder.com/300x180" alt="Video thumbnail" class="d-none">
+          </div>
+          <div class="p-3">
+            <h6 class="mb-2">Recession Proof Sales Strategies with Lyndon Brathwaite</h6>
+            <button class="btn btn-sm btn-outline-primary w-100 play-video-btn" data-video-id="video4">Play Video</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Video Modal -->
+<div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="videoModalLabel">Video Player</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-0">
+        <div id="videoContainer" class="ratio ratio-16x9">
+          <!-- Video will be inserted here dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.video-thumbnail {
+  height: 180px;
+  background: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6c757d;
+  font-size: 3rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.video-thumbnail:hover {
+  color: var(--hubspot-orange);
+  transform: scale(1.02);
+}
+
+.video-thumbnail img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.video-thumbnail:hover img {
+  opacity: 0.8;
+}
+
+.video-thumbnail i {
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.video-thumbnail:hover i {
+  transform: scale(1.2);
+}
+
+.play-video-btn {
+  transition: all 0.3s ease;
+}
+
+.play-video-btn:hover {
+  background-color: var(--hubspot-orange);
+  border-color: var(--hubspot-orange);
+  color: white;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const videoModal = new bootstrap.Modal(document.getElementById('videoModal'));
+  const videoContainer = document.getElementById('videoContainer');
+  const videoModalLabel = document.getElementById('videoModalLabel');
+  
+  // Video data - replace with your actual video URLs and titles
+  const videoData = {
+    video1: {
+      title: 'Recession Proof GTM Strategies with Sangram Vajre',
+      url: 'https://www.youtube.com/embed/YOUR_VIDEO_ID_1' // Replace with actual YouTube embed URL
+    },
+    video2: {
+      title: 'How to build a profitable company during a recession',
+      url: 'https://www.youtube.com/embed/YOUR_VIDEO_ID_2' // Replace with actual YouTube embed URL
+    },
+    video3: {
+      title: 'Recession Proof Inbound Strategies with Marcus Sheridan',
+      url: 'https://www.youtube.com/embed/YOUR_VIDEO_ID_3' // Replace with actual YouTube embed URL
+    },
+    video4: {
+      title: 'Recession Proof Sales Strategies with Lyndon Brathwaite',
+      url: 'https://www.youtube.com/embed/YOUR_VIDEO_ID_4' // Replace with actual YouTube embed URL
+    }
+  };
+  
+  // Add click event to video thumbnails
+  document.querySelectorAll('.video-thumbnail').forEach(thumbnail => {
+    thumbnail.addEventListener('click', function() {
+      const videoId = this.getAttribute('data-video-id');
+      playVideo(videoId);
+    });
+  });
+  
+  // Add click event to play buttons
+  document.querySelectorAll('.play-video-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      const videoId = this.getAttribute('data-video-id');
+      playVideo(videoId);
+    });
+  });
+  
+  function playVideo(videoId) {
+    const video = videoData[videoId];
+    if (video) {
+      // Update modal title
+      videoModalLabel.textContent = video.title;
+      
+      // Create iframe for YouTube video
+      videoContainer.innerHTML = `
+        <iframe 
+          src="${video.url}?autoplay=1" 
+          frameborder="0" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen>
+        </iframe>
+      `;
+      
+      // Show modal
+      videoModal.show();
+    }
+  }
+  
+  // Pause video when modal is closed
+  document.getElementById('videoModal').addEventListener('hidden.bs.modal', function() {
+    videoContainer.innerHTML = '';
+  });
+});
+</script>
+      
+      <!-- HubSpot Interviews Section -->
+ 
+    </div>
+  </section>
+
+  <!-- My Story Section -->
+  <section id="story" class="py-5 bg-light">
+    <div class="container">
+      <div class="story-section">
+        <div class="row align-items-center">
+          <div class="col-lg-8">
+            <h2 class="section-title mb-4">My Story</h2>
+            <p class="mb-4">In 2016, I co-founded Cacao Media, became a HubSpot Diamond partner, and shared my knowledge through workshops, conferences, and 1:1 coaching programmes. To help as many HubSpot users as possible, I wrote the ultimate HubSpot Handbook, now available on Amazon.</p>
+            <p class="mb-4">Fast forward to today, and my story has taken some amazing turns. After selling Cacao Media to ScaleOps, another HubSpot Diamond Partner, I joined HubSpot at its European headquarters in May 2022 as Partner Engagement Manager. There, I led a team to build the Accreditations Programme to scale services and guide partners to on best practices for working with HubSpot customers.</p>
+            <p class="mb-4">Now I'm following a dream—one that didn't quite fit in a cubicle. In January 2025, I embarked on a lifelong adventure: traveling the world with my family while exploring new business horizons.</p>
+            <p class="mb-4">I believe in growth, connection, and seizing every opportunity life gives you.</p>
+            <p class="mb-4">If you want to connect, talk HubSpot, or just say hello, drop me a message on LinkedIn. I'm here to share, support, and celebrate your incredible journey of triumphs, milestones and yes, even valleys of lessons with you.</p>
+            <div class="d-flex mt-4">
+              <a href="https://www.linkedin.com/in/resagooding/" class="social-icon">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+              <a href="https://www.instagram.com/resagooding/" class="social-icon">
+                <i class="fab fa-instagram"></i>
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-4 text-center mt-4 mt-lg-0">
+            <img src="https://static.wixstatic.com/media/1a0de1_278d78a2e6a54cd880bd90b45a9c4d5a~mv2.jpeg/v1/fill/w_528,h_762,al_c,q_85,enc_avif,quality_auto/1a0de1_278d78a2e6a54cd880bd90b45a9c4d5a~mv2.jpeg" alt="Resa Gooding" class="img-fluid story-img">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-5 bg-white">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <h2 class="section-title center mb-4">Want to chat? Book a meeting with me here</h2>
+          
+          <div class="row">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+              <img src="https://static.wixstatic.com/media/1a0de1_278d78a2e6a54cd880bd90b45a9c4d5a~mv2.jpeg/v1/fill/w_528,h_762,al_c,q_85,enc_avif,quality_auto/1a0de1_278d78a2e6a54cd880bd90b45a9c4d5a~mv2.jpeg" alt="Resa Teaching" class="img-fluid rounded-3 shadow">
+            </div>
+            <!-- <div class="col-lg-6">
+              <div class="contact-form">
+                <form>
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label for="firstName" class="form-label">First Name *</label>
+                      <input type="text" class="form-control" id="firstName" required>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="lastName" class="form-label">Last Name *</label>
+                      <input type="text" class="form-control" id="lastName" required>
+                    </div>
+                    <div class="col-12">
+                      <label for="email" class="form-label">Email *</label>
+                      <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="col-12">
+                      <label for="description" class="form-label">Which best describes you</label>
+                      <select class="form-select" id="description">
+                        <option value="" selected disabled>Select your role</option>
+                        <option value="partner">HubSpot Partner</option>
+                        <option value="customer">HubSpot Customer</option>
+                        <option value="other">Other</option>
+                      </select>
+                    </div>
+                    <div class="col-12">
+                      <label for="challenge" class="form-label">Tell us a bit more about your challenge</label>
+                      <textarea class="form-control" id="challenge" rows="3"></textarea>
+                    </div>
+                    <div class="col-12">
+                      <button type="submit" class="btn btn-hubspot w-100">Book your Meeting Here</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+          <h4 class="mb-3">Get More Tips & Strategies Here...</h4>
+          <p>Connect with me for ongoing HubSpot insights and strategies.</p>
+          <div class="d-flex">
+           <a href="https://www.linkedin.com/in/resagooding/" class="social-icon">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+              <a href="https://www.instagram.com/resagooding/" class="social-icon">
+                <i class="fab fa-instagram"></i>
+              </a>
+          </div>
+        </div>
+        <div class="col-lg-6 text-lg-end">
+          <p>&copy; 2023 Get HubSpot Help with Resa Gooding. All rights reserved.</p>
+          <p>This site is not affiliated with HubSpot, Inc.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  
+  <script>
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Audit Modal Functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const auditModal = new bootstrap.Modal(document.getElementById('auditModal'));
+      let modalShown = false;
+      
+      // Show modal when user scrolls 50% down the page
+      window.addEventListener('scroll', function() {
+        const scrollPosition = window.scrollY;
+        const pageHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercentage = (scrollPosition / pageHeight) * 100;
+        
+        if (scrollPercentage > 50 && !modalShown) {
+          auditModal.show();
+          modalShown = true;
+        }
+      });
+      
+      // Audit option selection
+      const auditOptions = document.querySelectorAll('.audit-option');
+      const startAuditBtn = document.getElementById('startAuditBtn');
+      
+      auditOptions.forEach(option => {
+        option.addEventListener('click', function() {
+          // Remove active class from all options
+          auditOptions.forEach(opt => opt.classList.remove('active'));
+          // Add active class to clicked option
+          this.classList.add('active');
+          
+          // Get the audit type
+          const selectedAuditType = this.getAttribute('data-audit-type');
+          
+          // Update button URL
+          startAuditBtn.href = `/audit?type=${selectedAuditType}`;
+        });
+      });
+      
+      // Add a button in the hero section to trigger the modal
+      const heroSection = document.querySelector('.hero-section');
+      const readyButton = heroSection.querySelector('.btn-hubspot');
+      
+      // Create a new button for the audit
+      const auditButton = document.createElement('a');
+      auditButton.href = '#';
+      auditButton.className = 'btn btn-outline-hubspot btn-lg';
+      auditButton.innerHTML = 'Start Free Audit <i class="fas fa-chart-line ms-2"></i>';
+      auditButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        auditModal.show();
+      });
+      
+      // Insert the audit button next to the ready button
+      readyButton.parentNode.insertBefore(auditButton, readyButton.nextSibling);
+    });
+  </script>
+  <!-- Audit Modal -->
+  <div class="modal fade" id="auditModal" tabindex="-1" aria-labelledby="auditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="auditModalLabel">Start Your HubSpot Audit</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-4">Choose the type of audit that best fits your needs:</p>
+          
+          <div class="row g-4">
+            <div class="col-md-6">
+              <div class="audit-option text-center p-4 border rounded-3 h-100" data-audit-type="revenue">
+                <div class="audit-icon mb-3">
+                  <i class="fas fa-rocket fa-3x text-primary"></i>
+                </div>
+                <h5>Revenue Acceleration Audit</h5>
+                <p class="mb-3">Comprehensive analysis of sales and marketing alignment, lead management, and revenue operations.</p>
+                <small class="text-muted">Ideal for: Sales leaders, Marketing directors, Revenue operations</small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="audit-option text-center p-4 border rounded-3 h-100" data-audit-type="success">
+                <div class="audit-icon mb-3">
+                  <i class="fas fa-trophy fa-3x text-success"></i>
+                </div>
+                <h5>Success Assessment</h5>
+                <p class="mb-3">Evaluate team adoption, workflow efficiency, and platform utilization.</p>
+                <small class="text-muted">Ideal for: HubSpot administrators, Customer success managers</small>
+              </div>
+            </div>
+          </div>
+          
+          <div class="d-grid mt-4">
+            <a href="/audit" class="btn btn-hubspot btn-lg" id="startAuditBtn">
+              Start Free Audit <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
